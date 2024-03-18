@@ -5,4 +5,7 @@ export default defineNuxtConfig({
   devServer: {
     port: 3201,
   },
+  components: {
+    dirs: [{ path: "./components", extensions: ["vue"], pathPrefix: false }],
+  },
 });

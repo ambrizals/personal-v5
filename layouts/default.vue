@@ -74,7 +74,8 @@ function openLink(to: string, target?: string) {
       <div
         class="hidden md:flex flex-1 flex-col dark:bg-gray-900 bg-gray-50 px-4 py-2 gap-2"
       >
-        <div class="flex justify-between items-center">
+        <div class="sticky top-4 flex flex-col gap-2">
+          <div class="flex justify-between items-center">
           <div
             class="dark:bg-gray-100 bg-gray-900 rounded-full w-10 h-10"
           ></div>
@@ -108,6 +109,7 @@ function openLink(to: string, target?: string) {
           :icon="menu.icon"
           :link="menu.link"
         />
+        </div>
       </div>
       <div class="w-full md:w-9/12 lg:w-10/12">
         <slot />

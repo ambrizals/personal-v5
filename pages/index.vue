@@ -1,3 +1,4 @@
+
 <template>
   <div>
     <div class="h-72 w-full bg-gray-900 relative">
@@ -51,5 +52,39 @@
     </div>
     <div class="h-4" />
     <UDivider class="h-4" />
+    <div class="flex">
+      <div class="w-9/12 px-4">
+        <CompTitle label="My Project" to="/project" />
+
+        <div class="h-2" />
+
+        <UCard v-for="item in 4" :key="item" class="mb-4">
+          <div class="flex gap-4">
+            <div class="flex-1">
+              <h3 class="text-lg font-semibold">Ea aliqua ut nostrud laboris ea voluptate eu mollit.</h3>
+              <p>Mollit anim reprehenderit cupidatat sint mollit incididunt duis commodo incididunt labore fugiat Lorem laboris qui.</p>
+            </div>
+            <div class="bg-gray-900 w-16 h-16"></div>
+          </div>
+        </UCard>
+      </div>
+      <div class="w-3/12 pr-4 flex flex-col gap-2">
+        <CompTitle label="Quick Links" />
+        <UButton block color="gray" variant="outline" :trailing="false" icon="i-heroicons-link-solid">
+          My Github Snippet
+        </UButton>
+        <UButton block color="gray" variant="outline" :trailing="false" icon="i-heroicons-document-check-16-solid
+
+">
+          My Curriculum Vitae
+        </UButton>
+        <UButton block color="gray" variant="outline" :trailing="false" icon="i-heroicons-link-solid">
+          My Glints Account
+        </UButton>
+        <UButton block color="gray" variant="outline" :trailing="false" icon="i-heroicons-envelope">
+          Send Me An Email
+        </UButton>
+      </div>
+    </div>
   </div>
 </template>
