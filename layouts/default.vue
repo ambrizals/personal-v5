@@ -41,7 +41,7 @@ function openLink(to: string, target?: string) {
 </script>
 
 <template>
-  <div>
+  <ColorScheme>
     <div
       class="flex md:hidden h-14 w-full items-center border-b dark:border-gray-600 border-gray-300 px-4 justify-between sticky top-0 dark:bg-gray-900 bg-gray-50"
     >
@@ -70,7 +70,7 @@ function openLink(to: string, target?: string) {
       </div>
     </div>
 
-    <div class="flex gap-4 min-h-screen">
+    <div class="flex min-h-screen">
       <div
         class="hidden md:flex flex-1 flex-col dark:bg-gray-900 bg-gray-50 px-4 py-2 gap-2"
       >
@@ -109,64 +109,64 @@ function openLink(to: string, target?: string) {
           :link="menu.link"
         />
       </div>
-      <div class="w-full px-4 py-2 md:p-0 md:w-9/12 lg:w-10/12">
+      <div class="w-full md:w-9/12 lg:w-10/12">
         <slot />
       </div>
     </div>
-  </div>
 
-  <USlideover v-model="menuResponsive" side="left">
-    <div
-      class="p-4 flex-1 flex flex-col gap-4"
-      @click="menuResponsive != menuResponsive"
-    >
-      <div class="flex justify-between items-center">
-        <div class="bg-gray-100 rounded-full w-10 h-10"></div>
-        <div class="flex gap-2">
-          <UButton
-            :icon="
-              isDark ? 'i-heroicons-moon-20-solid' : 'i-heroicons-sun-20-solid'
-            "
-            color="gray"
-            variant="outline"
-            aria-label="Theme"
-            @click="isDark = !isDark"
-          />
-          <UButton
-            variant="outline"
-            color="gray"
-            :icon="
-              menuResponsive
-                ? 'i-heroicons-x-mark-20-solid'
-                : 'i-heroicons-bars-3'
-            "
-            class="text-lg"
-            @click="toggleMenuResponsive()"
-          />
+    <USlideover v-model="menuResponsive" side="left">
+      <div
+        class="p-4 flex-1 flex flex-col gap-4"
+        @click="menuResponsive != menuResponsive"
+      >
+        <div class="flex justify-between items-center">
+          <div class="bg-gray-100 rounded-full w-10 h-10"></div>
+          <div class="flex gap-2">
+            <UButton
+              :icon="
+                isDark ? 'i-heroicons-moon-20-solid' : 'i-heroicons-sun-20-solid'
+              "
+              color="gray"
+              variant="outline"
+              aria-label="Theme"
+              @click="isDark = !isDark"
+            />
+            <UButton
+              variant="outline"
+              color="gray"
+              :icon="
+                menuResponsive
+                  ? 'i-heroicons-x-mark-20-solid'
+                  : 'i-heroicons-bars-3'
+              "
+              class="text-lg"
+              @click="toggleMenuResponsive()"
+            />
+          </div>
         </div>
-      </div>
-      <UDivider />
-      <LinkListItem
-        v-for="menu in HEADER_WEB_MENUS"
-        :key="menu.name"
-        class="flex items-center gap-2"
-        :label="menu.name"
-        :icon="menu.icon"
-        :link="menu.to"
-        :middleware="() => toggleMenuResponsive()"
-      />
+        <UDivider />
+        <LinkListItem
+          v-for="menu in HEADER_WEB_MENUS"
+          :key="menu.name"
+          class="flex items-center gap-2"
+          :label="menu.name"
+          :icon="menu.icon"
+          :link="menu.to"
+          :middleware="() => toggleMenuResponsive()"
+        />
 
-      <UDivider />
-      <div class="font-bold">Social Media</div>
-      <LinkListItem
-        v-for="menu in HEADER_SOCIAL_MENUS"
-        :key="menu.name"
-        class="flex items-center gap-2"
-        :label="menu.name"
-        :icon="menu.icon"
-        :link="menu.link"
-        :middleware="() => toggleMenuResponsive()"
-      />
-    </div>
-  </USlideover>
+        <UDivider />
+        <div class="font-bold">Social Media</div>
+        <LinkListItem
+          v-for="menu in HEADER_SOCIAL_MENUS"
+          :key="menu.name"
+          class="flex items-center gap-2"
+          :label="menu.name"
+          :icon="menu.icon"
+          :link="menu.link"
+          :middleware="() => toggleMenuResponsive()"
+        />
+      </div>
+    </USlideover>    
+  </ColorScheme>
 </template>
