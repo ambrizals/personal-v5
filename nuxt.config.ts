@@ -1,3 +1,5 @@
+import "./env";
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   ssr: true,
@@ -7,5 +9,8 @@ export default defineNuxtConfig({
   },
   components: {
     dirs: [{ path: "./components", extensions: ["vue"], pathPrefix: false }],
+  },
+  build: {
+    transpile: ["trpc-nuxt"],
   },
 });
