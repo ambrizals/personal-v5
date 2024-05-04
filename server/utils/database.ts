@@ -1,13 +1,18 @@
-import Sequelize from "@sequelize/core";
 import { env } from "~/env";
+import { drizzle } from "drizzle-orm/mysql2";
+import mysql from "mysql2/promise";
+import * as schema from "./schema";
 
-export const db = new Sequelize(
-  env.DATABASE_NAME,
-  env.DATABASE_USER,
-  env.DATABASE_PASSWORD,
-  {
-    host: env.DATABASE_HOST,
-    dialect: env.DATABASE_DIALECT,
-    logging(sql, timing) {},
-  }
-);
+const connection = mysql.createPool({
+  host: env.DATABASE_HOST,
+  database: env.DATABASE_NAME,
+  user: env.DATABASE_USER,
+  password: env.DATABASE_PASSWORD,
+  pool: 1,
+  port: 3306,
+});
+
+export const db = drizzle(connection, {
+  schema,
+  mode: "default",
+});

@@ -11,6 +11,17 @@ export default router({
       })
     )
     .mutation(async ({ input }) => {
+      const user = await db.query.Users.findFirst({
+        where: (fields, { eq }) => eq(fields.username, input.identity),
+      });
+
+      if (user === undefined) {
+        throw new TRPCError({
+          code: "UNPROCESSABLE_CONTENT",
+          message: "Fail to validate identity",
+        });
+      }
+
       if (input.identity === "admin" && input.password === "admin") {
         const token = generateJwtToken({ id: 1 });
         return {

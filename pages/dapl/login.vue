@@ -15,7 +15,7 @@ const isDark = computed({
 <template>
   <div class="flex justify-center items-center min-h-screen">
     <UForm
-      class="w-4/12"
+      class="w-10/12 md:w-4/12"
       :schema="schema"
       :state="formState"
       @submit="doLogin"
