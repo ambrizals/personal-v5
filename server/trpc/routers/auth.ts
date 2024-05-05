@@ -22,7 +22,9 @@ export default router({
         });
       }
 
-      if (input.identity === "admin" && input.password === "admin") {
+      const flag = await verifyHash(user.password, input.password);
+
+      if (flag) {
         const token = generateJwtToken({ id: 1 });
         return {
           token,

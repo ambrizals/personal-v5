@@ -8,8 +8,8 @@ const connection = mysql.createPool({
   database: env.DATABASE_NAME,
   user: env.DATABASE_USER,
   password: env.DATABASE_PASSWORD,
-  pool: 1,
-  port: 3306,
+  pool: env.DATABASE_POOL_CONNECTION,
+  port: env.DATABASE_PORT,
 });
 
 export const db = drizzle(connection, {
