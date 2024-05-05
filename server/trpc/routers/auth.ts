@@ -25,7 +25,7 @@ export default router({
       const flag = await verifyHash(user.password, input.password);
 
       if (flag) {
-        const token = generateJwtToken({ id: 1 });
+        const token = generateJwtToken({ id: user.id });
         return {
           token,
           type: "Bearer",
@@ -33,7 +33,7 @@ export default router({
       } else {
         throw new TRPCError({
           code: "UNPROCESSABLE_CONTENT",
-          message: "IDENTITY_MISS_MATCHED",
+          message: "Your identity or password is missmatch, please check again",
         });
       }
     }),
