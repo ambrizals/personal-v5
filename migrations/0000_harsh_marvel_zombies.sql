@@ -2,7 +2,7 @@ CREATE TABLE `articles` (
 	`id` int unsigned AUTO_INCREMENT NOT NULL,
 	`title` varchar(255) NOT NULL,
 	`slug` varchar(255) NOT NULL,
-	`description` text NOT NULL,
+	`description` text,
 	`content` text DEFAULT (''),
 	`cover` varchar(255),
 	`thumbnail` varchar(255),
@@ -25,6 +25,13 @@ CREATE TABLE `tag_articles` (
 	`article_id` int unsigned NOT NULL,
 	`tag_id` int unsigned,
 	CONSTRAINT `tag_articles_id` PRIMARY KEY(`id`)
+);
+--> statement-breakpoint
+CREATE TABLE `users` (
+	`id` int unsigned AUTO_INCREMENT NOT NULL,
+	`username` varchar(255) NOT NULL,
+	`password` text NOT NULL,
+	CONSTRAINT `users_id` PRIMARY KEY(`id`)
 );
 --> statement-breakpoint
 ALTER TABLE `tag_articles` ADD CONSTRAINT `tag_articles_article_id_articles_id_fk` FOREIGN KEY (`article_id`) REFERENCES `articles`(`id`) ON DELETE no action ON UPDATE no action;--> statement-breakpoint

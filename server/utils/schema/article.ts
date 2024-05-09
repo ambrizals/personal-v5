@@ -16,7 +16,7 @@ export const Article = mysqlTable("articles", {
     .primaryKey(),
   title: varchar("title", { length: 255 }).notNull(),
   slug: varchar("slug", { length: 255 }).notNull(),
-  description: text("description").notNull(),
+  description: text("description"),
   content: text("content").default(""),
   cover: varchar("cover", { length: 255 }),
   thumbnail: varchar("thumbnail", { length: 255 }),
