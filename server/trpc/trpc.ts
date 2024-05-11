@@ -1,3 +1,6 @@
+// Types
+import type { inferRouterOutputs } from "@trpc/server";
+
 /**
  * This is your entry point to setup the root configuration for tRPC on the server.
  * - `initTRPC` should only be used once per app.
@@ -9,6 +12,7 @@
  */
 import { initTRPC } from "@trpc/server";
 import type { Context } from "~/server/trpc/context";
+import type { AppRouter } from "./routers";
 
 const t = initTRPC.context<Context>().create();
 
@@ -18,3 +22,6 @@ const t = initTRPC.context<Context>().create();
 export const publicProcedure = t.procedure;
 export const router = t.router;
 export const middleware = t.middleware;
+
+export type RouterOutput = inferRouterOutputs<AppRouter>;
+export type ArticleOutputAPI = RouterOutput["blog"]["article"];

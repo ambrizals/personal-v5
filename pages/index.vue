@@ -1,3 +1,10 @@
+<script setup lang="ts">
+import { env } from '~/env';
+const { $client } = useNuxtApp()
+
+const { data: blogs, status } = await $client.blog.article.useQuery({ page: 1, perPage: 2 })
+
+</script>
 
 <template>
   <div>
@@ -5,39 +12,39 @@
       <div class="absolute bottom-0 px-4 py-8 w-full md:w-6/12 text-white">
         <h1 class="text-4xl">Ambrizal Suryadinata</h1>
         <p>
-          Saya adalah seorang fullstack developer yang pernah menangani Web
-          Development, disini anda dapat melihat beberapa artikel yang membahas
-          mengenai teknologi yang saya gunakan dan cerita pengalaman.
+          Software Engineer
         </p>
       </div>
     </div>
     <div class="h-4" />
-    <div class="px-4">
+    <div v-if="status === 'success'" class="px-4">
       <div class="flex flex-col md:flex-row justify-between gap-4">
         <UCard
-          v-for="number in 2"
-          :key="number"
+          v-for="blog in blogs?.article"
+          :key="blog.id"
           class="flex-1"
         >
           <div class="flex flex-col md:flex-row gap-4">
             <div class="flex items-center md:items-start gap-4">
-            <div class="bg-gray-700 w-16 h-16 md:w-32 md:h-32"></div>
+            <div class="bg-gray-700 w-16 h-16 md:w-32 md:h-32">
+              <NuxtImg class="object-cover h-16 md:h-32" provider="localEnhance" :src="`cover/${blog.thumbnail}`" />
+            </div>
             <div class="block md:hidden">
-              <div class="text-xs">Category / 12-12-2012</div>
-              <h2 class="text-xl font-bold">Ex ipsum ex cupidatat dolor.</h2>
+              <div class="text-xs">{{ blog.createdAt }}</div>
+              <NuxtLink :to="`/blog/${blog.slug}`">
+                <h2 class="text-xl font-bold">{{ blog.title }}</h2>
+              </NuxtLink>
             </div>
           </div>
           <div class="flex flex-col flex-1">
-            <div class="text-sm hidden md:block">Category / 12-12-2012</div>
-            <h2 class="text-2xl hidden md:block font-bold">
-              Ex ipsum ex cupidatat dolor.
-            </h2>
+            <div class="text-sm hidden md:block">{{ blog.createdAt }}</div>
+            <NuxtLink :to="`/blog/${blog.slug}`">
+              <h2 class="text-2xl hidden md:block font-bold">
+                {{ blog.title }}
+              </h2>
+            </NuxtLink>
             <p class="text-justify">
-              Duis nisi in exercitation Lorem sunt ullamco aliqua mollit laboris
-              incididunt dolore qui id ad. Tempor consectetur labore voluptate
-              adipisicing deserunt aute eiusmod proident consequat veniam anim.
-              Duis eiusmod magna eiusmod do do sunt in minim pariatur enim et
-              exercitation.
+              {{ blog.description }}
             </p>
           </div>
           </div>

@@ -10,6 +10,7 @@
   },
   "devDependencies": {
     "@iconify/json": "^2.2.192",
+    "@nuxt/image": "^1.7.0",
     "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^18",
     "drizzle-kit": "^0.20.17",
@@ -23,6 +24,7 @@
     "@trpc/client": "^10.45.2",
     "@trpc/server": "^10.45.2",
     "argon2": "^0.40.1",
+    "date-fns": "^3.6.0",
     "drizzle-orm": "^0.30.10",
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.9.7",
