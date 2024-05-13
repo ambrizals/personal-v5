@@ -1,7 +1,3 @@
-<template>
-  <div v-html="markdown.render(source)" />
-</template>
-
 <script setup lang="ts">
 import '~/assets/hljs.css'
 
@@ -9,9 +5,6 @@ import MarkdownIt from "markdown-it";
 import MarkdownItAnchor from "markdown-it-anchor";
 import MarkdownItHighlightjs from "markdown-it-highlightjs";
 import MarkdownItNamedCodeBlock from 'markdown-it-named-code-blocks'
-//@ts-ignore
-import MarkdownItToc from 'markdown-it-table-of-contents'
-import MarkdownItTocDoneRight from 'markdown-it-toc-done-right'
 
 const markdown = new MarkdownIt()
   .use(MarkdownItAnchor, {
@@ -25,7 +18,6 @@ const markdown = new MarkdownIt()
   })
   .use(MarkdownItHighlightjs)
   .use(MarkdownItNamedCodeBlock)
-  .use(MarkdownItTocDoneRight, {})
 
 defineProps({
   source: {
@@ -33,4 +25,13 @@ defineProps({
     default: ""
   }
 });
+
+
+function renderMd(src: string, env?: any) {
+  return markdown.render(src, env)
+}
 </script>
+
+<template>
+  <div v-html="renderMd(source)" id="blog-content" />
+</template>

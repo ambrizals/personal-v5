@@ -3,7 +3,7 @@ import "./env";
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   ssr: true,
-  modules: ["@nuxt/content", "@nuxt/ui", "@nuxt/image"],
+  modules: ["@nuxt/content", "@nuxt/ui", "@nuxt/image", "nuxt-disqus"],
 
   devServer: {
     port: 3000,
@@ -27,6 +27,10 @@ export default defineNuxtConfig({
     timeline: {
       enabled: true,
     },
+  },
+
+  disqus: {
+    shortname: "ambrizalofficialsblog",
   },
 
   image: {

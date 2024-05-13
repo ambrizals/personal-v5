@@ -43,7 +43,7 @@ function openLink(to: string, target?: string) {
 <template>
   <ColorScheme>
     <div
-      class="flex md:hidden h-14 w-full items-center border-b dark:border-gray-600 border-gray-300 px-4 justify-between sticky top-0 dark:bg-gray-900 bg-gray-50"
+      class="flex md:hidden h-14 w-full items-center border-b dark:border-gray-600 border-gray-300 px-4 justify-between sticky top-0 dark:bg-gray-900 bg-gray-50 z-50"
     >
       <div class="dark:bg-gray-100 bg-gray-900 rounded-full w-10 h-10"></div>
       <div class="flex justify-center items-center gap-2">

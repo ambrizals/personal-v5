@@ -14,7 +14,8 @@
     "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^18",
     "drizzle-kit": "^0.20.17",
-    "nuxt": "^3.4.3"
+    "nuxt": "^3.4.3",
+    "nuxt-disqus": "^1.0.1"
   },
   "dependencies": {
     "@egoist/tailwindcss-icons": "^1.7.4",
@@ -35,10 +36,9 @@
     "markdown-it-named-code-blocks": "^1.0.4",
     "markdown-it-sub": "^2.0.0",
     "markdown-it-sup": "^2.0.0",
-    "markdown-it-table-of-contents": "^0.6.0",
     "markdown-it-task-lists": "^2.1.1",
-    "markdown-it-toc-done-right": "^4.2.0",
     "mysql2": "^3.9.7",
+    "tocbot": "^4.27.20",
     "trpc-nuxt": "^0.10.20",
     "zod": "^3.22.4"
   }
