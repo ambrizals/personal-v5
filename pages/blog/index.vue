@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const { $client } = useNuxtApp()
-const { query } = useRoute()
+const { query, fullPath } = useRoute()
+const { public: runtimeConfig } = useRuntimeConfig()
 const { replace } = useRouter()
 
 const page = useState('page', () => Number(query.page?.toString() ?? '1'))
@@ -29,6 +30,42 @@ watch(search, (value) => {
   , 1000)
 })
 
+useHead({
+  title: 'Blog',
+  meta: [
+    {
+      hid: "description",
+      name: "description",
+      content:
+        "Blog menarik yang ditulis dengan berbagai tema menarik seputar teknologi, pengalaman pribadi, serta tips - tips yang mungkin berguna",
+    },
+    {
+      hid: "og:title",
+      name: "og:title",
+      property: "og:title",
+      content: "Blog",
+    },
+    {
+      hid: "og:description",
+      name: "og:description",
+      property: "og:description",
+      content:
+        "Blog menarik yang ditulis dengan berbagai tema menarik seputar teknologi, pengalaman pribadi, serta tips - tips yang mungkin berguna",
+    },
+    {
+      hid: "og:url",
+      name: "og:url",
+      property: "og:url",
+      content: runtimeConfig.appUrl + fullPath,
+    },
+  ],
+  link: [
+    {
+      rel: "canonical",
+      href: runtimeConfig.appUrl + fullPath,
+    },
+  ],  
+})
 </script>
 
 <template>

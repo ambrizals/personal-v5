@@ -1,15 +1,52 @@
 <script setup lang="ts">
-import { env } from '~/env';
 const { $client } = useNuxtApp()
 
-const { data: blogs, status } = await $client.blog.article.useQuery({ page: 1, perPage: 2 })
+const { public: runtimeConfig } = useRuntimeConfig()
 
+const { data: blogs, status } = await $client.blog.article.useQuery({ page: 1, perPage: 2 })
+useHead({
+  title: 'Beranda',
+  meta: [
+    {
+      hid: "description",
+      name: "description",
+      content:
+        "Situs ini adalah situs pribadi milik Ambrizal Suryadinata yang memuat konten mengenai teknologi ataupun pengalaman menarik.",
+    },
+    {
+      hid: "og:title",
+      name: "og:title",
+      property: "og:title",
+      content: "Beranda",
+    },
+    {
+      hid: "og:description",
+      name: "og:description",
+      property: "og:description",
+      content:
+        "Situs ini adalah situs pribadi milik Ambrizal Suryadinata yang memuat konten mengenai teknologi ataupun pengalaman menarik.",
+    },
+    {
+      hid: "og:url",
+      name: "og:url",
+      property: "og:url",
+      content: runtimeConfig.appUrl,
+    },
+  ],
+  link: [
+    {
+      rel: "canonical",
+      href: runtimeConfig.appUrl,
+    },
+  ],
+})
 </script>
 
 <template>
   <div>
-    <div class="h-72 w-full bg-gray-900 relative">
-      <div class="absolute bottom-0 px-4 py-8 w-full md:w-6/12 text-white">
+    <div class="h-52 md:h-72 w-full bg-gray-900 relative overflow-hidden">
+      <img src="~/assets/image/home.jpg" class="object-cover object-center w-full h-full" />
+      <div class="absolute bottom-0 px-4 py-8 w-full text-white text-center">
         <h1 class="text-4xl">Ambrizal Suryadinata</h1>
         <p>
           Software Engineer

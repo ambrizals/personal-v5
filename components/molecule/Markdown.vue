@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import '~/assets/hljs.css'
+import '~/assets/css/hljs.css'
 
 import MarkdownIt from "markdown-it";
 import MarkdownItAnchor from "markdown-it-anchor";

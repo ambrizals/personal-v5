@@ -38,6 +38,13 @@ function openLink(to: string, target?: string) {
     router.replace(to);
   }
 }
+
+useHead({
+  titleTemplate: (title) => title ? `${title} - Ambrizal Personal Site` : 'Ambrizal Personal Site',
+  htmlAttrs: {
+    lang: 'id'
+  }
+})
 </script>
 
 <template>
@@ -170,5 +177,7 @@ function openLink(to: string, target?: string) {
         />
       </div>
     </USlideover>    
+
+    <UNotifications />
   </ColorScheme>
 </template>

@@ -1,4 +1,4 @@
-import "./env";
+import "./env/server";
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -31,6 +31,12 @@ export default defineNuxtConfig({
 
   disqus: {
     shortname: "ambrizalofficialsblog",
+  },
+
+  runtimeConfig: {
+    public: {
+      appUrl: process.env.NUXT_PUBLIC_APP_URL,
+    },
   },
 
   image: {

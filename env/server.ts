@@ -15,7 +15,4 @@ export const env = createEnv({
       .optional()
       .default("development"),
   },
-  client: {
-    NUXT_PUBLIC_CDN_ASSETS: z.string().optional(),
-  },
 });
