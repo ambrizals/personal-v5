@@ -3,6 +3,7 @@ import { publicProcedure, router } from "../trpc";
 import { eq, sql } from "drizzle-orm";
 import { format } from "date-fns";
 import { TRPCError } from "@trpc/server";
+import { cachedComments } from "~/server/utils/cache/blog";
 
 export default router({
   article: publicProcedure
@@ -15,7 +16,7 @@ export default router({
     .query(async ({ input }) => {
       const pagination = await db
         .select({
-          count: sql<number>`count(*)`,
+          count: sql<number>`count(id)`,
         })
         .from(Article)
         .where(eq(Article.published, true))
@@ -63,5 +64,16 @@ export default router({
       ...post,
       createdAt: format(post.createdAt, "dd MMM, yyyy"),
     };
+  }),
+  comments: publicProcedure.query(async () => {
+    const response = await cachedComments();
+
+    return response.response
+      .filter((_, i) => i < 5)
+      .map((d) => ({
+        name: d.author.name,
+        message: d.raw_message,
+        id: d.id,
+      }));
   }),
 });

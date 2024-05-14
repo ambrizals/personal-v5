@@ -75,7 +75,7 @@ watch(status, (value) => {
       </div>
     </div>
     <div v-if="data" class="py-4 px-8">
-      <DisqusComments :identifier="`/blog/${data.slug}`" />
+      <DisqusComments :url="`https://ambrizal.net/blog/read/${data.slug}`" />
     </div>
   </div>
 </template>

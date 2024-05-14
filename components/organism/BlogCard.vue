@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { ArticleOutputAPI } from '~/server/trpc/trpc';
 
-const props = defineProps<{
+defineProps<{
   blog: ArticleOutputAPI['article'][0]
 }>()
 </script>
