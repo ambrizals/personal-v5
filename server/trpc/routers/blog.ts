@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { publicProcedure, router } from "../trpc";
-import { eq, sql } from "drizzle-orm";
+import { and, eq, like, sql } from "drizzle-orm";
 import { format } from "date-fns";
 import { TRPCError } from "@trpc/server";
 import { cachedComments } from "~/server/utils/cache/blog";
@@ -11,15 +11,23 @@ export default router({
       z.object({
         perPage: z.number().default(15),
         page: z.number().default(1),
+        terms: z.string().default(""),
       })
     )
     .query(async ({ input }) => {
+      const whereQuery = and(
+        eq(Article.published, true),
+        input.terms.length > 0
+          ? like(Article.title, `%${input.terms}%`)
+          : undefined
+      );
+
       const pagination = await db
         .select({
           count: sql<number>`count(id)`,
         })
         .from(Article)
-        .where(eq(Article.published, true))
+        .where(whereQuery)
         .then((res) => ({
           current: input.page,
           last_page: Math.ceil(res[0].count / input.perPage),
@@ -28,7 +36,7 @@ export default router({
         }));
 
       const article = await db.query.Article.findMany({
-        where: (fields, { eq }) => eq(fields.published, true),
+        where: whereQuery,
         limit: input.perPage,
         offset: pagination.offset,
         orderBy: (fields, { desc }) => desc(fields.createdAt),

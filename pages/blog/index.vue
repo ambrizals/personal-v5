@@ -4,6 +4,8 @@ const { query } = useRoute()
 const { replace } = useRouter()
 
 const page = useState('page', () => Number(query.page?.toString() ?? '1'))
+const search = useState('search', () => '')
+const searchDebounce = ref<NodeJS.Timeout>()
 
 const { data, status } = await $client.blog.article.useQuery({ page: Number(query.page?.toString() ?? '1'), perPage: 10 })
 const { data: comments, status: commentStatus } = await $client.blog.comments.useQuery()
@@ -12,9 +14,19 @@ watch(page, (value) => {
   replace({ query: {
     page: value
   } })
-  $client.blog.article.useQuery({ page: value, perPage: 10 }).then(res => {
+  $client.blog.article.useQuery({ page: value, perPage: 10, terms: search.value }).then(res => {
     data.value = res.data.value
   })
+})
+
+watch(search, (value) => {
+  if (searchDebounce.value) clearTimeout(searchDebounce.value)
+  searchDebounce.value = setTimeout(() => 
+    $client.blog.article.useQuery({ page: 1, perPage: 10, terms: value })
+    .then(res => {
+      data.value = res.data.value
+    })
+  , 1000)
 })
 
 </script>
@@ -23,7 +35,7 @@ watch(page, (value) => {
   <div class="flex md:flex-row flex-col gap-2">
     <div class="w-full md:w-9/12 px-8 py-4">
       <div id="search">
-        <UInput placeholder="Silakan masukan keyword judul yang ingin dicari..." />
+        <UInput v-model="search" size="xl" placeholder="Silakan masukan keyword judul yang ingin dicari..." />
       </div>
 
       <div v-if="data?.article.length === 0" class="bg-gray-200 border-gray-400 dark:bg-gray-800 dark:border-gray-600 border p-4 rounded-md my-4">
@@ -38,7 +50,7 @@ watch(page, (value) => {
         <UPagination v-if="status === 'success'" v-model="page" :page-count="data?.pagination.per_page" :total="data?.pagination.total_item" show-last show-first />
       </div>
     </div>
-    <div class="md:w-3/12 py-4 mr-8">
+    <div class="md:w-3/12 py-4 mx-8 md:mx-0 md:mr-8">
       <div class="bg-gray-300 h-64">
         IKLAN DISINI
       </div>
