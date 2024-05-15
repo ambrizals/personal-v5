@@ -3,10 +3,10 @@ import { createTRPCNuxtClient, httpBatchLink } from "trpc-nuxt/client";
 import type { AppRouter } from "~/server/trpc/routers";
 
 export default defineNuxtPlugin((nuxtApp) => {
-  let url = "api/trpc";
+  let url = "/api/trpc";
 
   if (import.meta.server) {
-    url = `http://localhost:${nuxtApp.$config.port}/${url}`;
+    url = `http://localhost:${nuxtApp.$config.port}${url}`;
   }
 
   /**

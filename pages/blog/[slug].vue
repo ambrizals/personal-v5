@@ -10,82 +10,88 @@ const toast = useToast()
 const markdownRef = ref<any>()
 const isTocRendered = ref(false)
 
-const { data, status } = useAsyncData(async () => {
-  const blog = await $client.blog.read.query(params.slug.toString())
+const { data, status } = await $client.blog.read.useQuery(params.slug.toString())
 
-  useHead({
-    title: blog.title,
-    meta: [
-      {
-        hid: "description",
-        name: "description",
-        content: blog.description,
-      },
-      {
-        hid: "og:type",
-        property: "og:type",
-        content: "article",
-      },
-      {
-        hid: "article:published_time",
-        name: "article:published_time",
-        property: "article:published_time",
-        content: blog.createdAt,
-      },
-      {
-        hid: "article:publisher",
-        name: "article:publisher",
-        property: "article:publisher",
-        content: "https://web.facebook.com/ambrizalsuryadinata",
-      },
-      {
-        hid: "article:author",
-        name: "article:author",
-        property: "article:author",
-        content: "https://www.facebook.com/ambrizalsuryadinatasb",
-      },
-      {
-        hid: "og:title",
-        name: "og:title",
-        property: "og:title",
-        content: blog.title,
-      },
-      {
-        hid: "og:description",
-        name: "og:description",
-        property: "og:description",
-        content: blog.description,
-      },
-      {
-        hid: "og:url",
-        name: "og:url",
-        property: "og:url",
-        content: runtimeConfig.appUrl + fullPath,
-      },
-      // {
-      //   hid: "og:image",
-      //   name: "og:image",
-      //   property: "og:image",
-      //   content: this.meta.image,
-      //   // content: this.article.posts.cover_article ? this.imageCDN + "cover/" + this.article.posts.cover_article : 'Sedang memuat gambar',
-      // },
-      // {
-      //   hid: "og:image:type",
-      //   name: "og:image:type",
-      //   property: "og:image:type",
-      //   content: "image/jpeg",
-      // },
-    ],
-    link: [
-      {
-        rel: "canonical",
-        href: runtimeConfig.appUrl + fullPath,
-      },
-    ],
-  })
-
-  return blog
+useAsyncData(`set-head-${params.slug.toString()}`, async () => {
+  if (data.value) {
+    useHead({
+      title: data.value.title,
+      meta: [
+        {
+          hid: "description",
+          name: "description",
+          content: data.value.description,
+        },
+        {
+          hid: "og:type",
+          property: "og:type",
+          content: "article",
+        },
+        {
+          hid: "article:published_time",
+          name: "article:published_time",
+          property: "article:published_time",
+          content: data.value.createdAt,
+        },
+        {
+          hid: "article:publisher",
+          name: "article:publisher",
+          property: "article:publisher",
+          content: "https://web.facebook.com/ambrizalsuryadinata",
+        },
+        {
+          hid: "article:author",
+          name: "article:author",
+          property: "article:author",
+          content: "https://www.facebook.com/ambrizalsuryadinatasb",
+        },
+        {
+          hid: "og:title",
+          name: "og:title",
+          property: "og:title",
+          content: data.value.title,
+        },
+        {
+          hid: "og:description",
+          name: "og:description",
+          property: "og:description",
+          content: data.value.description,
+        },
+        {
+          hid: "og:url",
+          name: "og:url",
+          property: "og:url",
+          content: runtimeConfig.appUrl + fullPath,
+        },
+        // {
+        //   hid: "og:image",
+        //   name: "og:image",
+        //   property: "og:image",
+        //   content: this.meta.image,
+        //   // content: this.article.posts.cover_article ? this.imageCDN + "cover/" + this.article.posts.cover_article : 'Sedang memuat gambar',
+        // },
+        // {
+        //   hid: "og:image:type",
+        //   name: "og:image:type",
+        //   property: "og:image:type",
+        //   content: "image/jpeg",
+        // },
+      ],
+      link: [
+        {
+          rel: "canonical",
+          href: runtimeConfig.appUrl + fullPath,
+        },
+      ],
+    })    
+  }  
 })
+
+// const { data, status } = useAsyncData(async () => {
+//   const blog = await $client.blog.read.query(params.slug.toString())
+
+//   return blog
+// })
 
 onMounted(() => {
   setTimeout(() => {
