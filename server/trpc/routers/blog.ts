@@ -12,11 +12,12 @@ export default router({
         perPage: z.number().default(15),
         page: z.number().default(1),
         terms: z.string().default(""),
+        showHidden: z.boolean().default(false),
       })
     )
     .query(async ({ input }) => {
       const whereQuery = and(
-        eq(Article.published, true),
+        input.showHidden ? undefined : eq(Article.published, true),
         input.terms.length > 0
           ? like(Article.title, `%${input.terms}%`)
           : undefined

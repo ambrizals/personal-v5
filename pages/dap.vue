@@ -55,6 +55,10 @@ const menus = [{
     }
   }]]
 }]
+
+useHead({
+  titleTemplate: () => 'Admin Dashboard'
+})
 </script>
 
 <template>
@@ -76,7 +80,7 @@ const menus = [{
       </UTooltip>
     </div>
     <div class="w-[48px]" />
-    <div class="flex-1 px-4 py-2 bg-gray-100 dark:bg-gray-800">
+    <div class="flex-1 px-4 py-2 bg-gray-50 dark:bg-gray-800">
       <NuxtPage />
     </div>
   </div>

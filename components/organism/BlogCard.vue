@@ -2,7 +2,10 @@
 import type { ArticleOutputAPI } from '~/server/trpc/trpc';
 
 defineProps<{
-  blog: ArticleOutputAPI['article'][0]
+  blog: ArticleOutputAPI['article'][0],
+  override?: {
+    to?: string
+  }
 }>()
 </script>
 
@@ -17,18 +20,24 @@ defineProps<{
       </div>
       <div class="block md:hidden">
         <div class="text-xs">{{ blog.createdAt }}</div>
-        <NuxtLink :to="`/blog/${blog.slug}`">
+        <NuxtLink :to="override?.to ? override?.to : `/blog/${blog.slug}`">
           <h2 class="text-xl font-bold">{{ blog.title }}</h2>
         </NuxtLink>
       </div>
     </div>
     <div class="flex flex-col flex-1">
       <div class="text-sm hidden md:block">{{ blog.createdAt }}</div>
-      <NuxtLink :to="`/blog/${blog.slug}`">
+      <NuxtLink :to="override?.to ? override?.to : `/blog/${blog.slug}`">
         <h2 class="text-2xl hidden md:block font-bold">
           {{ blog.title }}
         </h2>
       </NuxtLink>
+      <div v-if="blog.published === false" class="flex gap-2">
+        <UBadge v-if="blog.published === false" color="red" class="self-start">
+          Belum Dipublikasi
+        </UBadge>
+        <UButton size="2xs">Lanjutkan Tulisan</UButton>
+      </div>
       <p class="text-justify">
         {{ blog.description }}
       </p>

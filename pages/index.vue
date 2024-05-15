@@ -1,9 +1,21 @@
 <script setup lang="ts">
+import type { ArticleOutputAPI } from '~/server/trpc/trpc';
+
 const { $client } = useNuxtApp()
 
 const { public: runtimeConfig } = useRuntimeConfig()
 
-const { data: blogs, status } = await $client.blog.article.useQuery({ page: 1, perPage: 2 })
+// const blogs = useState<ArticleOutputAPI>('blogs')
+
+// useAsyncData(async () => {
+//   if (import.meta.server) {
+//     blogs.value = await $client.blog.article.query({ page: 1, perPage: 2 })
+//   }
+// })
+
+const { data: blogs } = await $client.blog.article.useQuery({ page: 1, perPage: 2 })
+
+
 useHead({
   title: 'Beranda',
   meta: [
@@ -54,7 +66,10 @@ useHead({
       </div>
     </div>
     <div class="h-4" />
-    <div v-if="status === 'success'" class="px-4">
+    <div class="px-4">
+      <!-- <div v-if="pending">
+        Loading...
+      </div> -->
       <div class="flex flex-col md:flex-row justify-between gap-4">
         <BlogCard
           v-for="blog in blogs?.article"
