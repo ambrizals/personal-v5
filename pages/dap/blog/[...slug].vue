@@ -2,7 +2,7 @@
 <script setup lang="ts">
 import { MdEditor } from 'md-editor-v3';
 import 'md-editor-v3/lib/style.css';
-import { config } from 'md-editor-v3';
+import type { ExposeParam } from 'md-editor-v3';
 
 const colorMode = useColorMode();
 
@@ -20,6 +20,7 @@ const { $client } = useNuxtApp()
 
 const content = ref('')
 const title = ref('')
+const editorRef = ref<ExposeParam>();
 
 useAsyncData(`editor`, async () => {
   const slug = params.slug.toString()
@@ -28,6 +29,10 @@ useAsyncData(`editor`, async () => {
     const data = await $client.blog.read.query(params.slug.toString())
     content.value = data.content ?? ''
     title.value = data.title
+
+    if (editorRef.value) {
+      editorRef.value.resetHistory()
+    }
   }
 })
 </script>
@@ -41,6 +46,6 @@ useAsyncData(`editor`, async () => {
         <UButton color='red'>Reset</UButton>
       </div>
     </div>
-    <MdEditor class="flex-1" v-model="content" language="en-US" :theme="isDark ? 'dark': 'light'" />
+    <MdEditor ref="editorRef" class="flex-1" v-model="content" language="en-US" :theme="isDark ? 'dark': 'light'" />
   </div>
 </template>
