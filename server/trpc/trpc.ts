@@ -25,3 +25,4 @@ export const middleware = t.middleware;
 
 export type RouterOutput = inferRouterOutputs<AppRouter>;
 export type ArticleOutputAPI = RouterOutput["blog"]["article"];
+export type BlogReadOutputAPI = RouterOutput["blog"]["read"];

@@ -84,6 +84,7 @@ useHead({
       <NuxtPage />
     </div>
   </div>
+  <UNotifications />
   <UModal v-model="logoutConfirm">
       <UCard :ui="{ ring: '', divide: 'divide-y divide-gray-100 dark:divide-gray-800' }">
         <template #header>
@@ -99,5 +100,5 @@ useHead({
           </div>
         </template>
       </UCard>
-    </UModal>
+  </UModal>
 </template>

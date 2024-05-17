@@ -36,7 +36,6 @@ defineProps<{
         <UBadge v-if="blog.published === false" color="red" class="self-start">
           Belum Dipublikasi
         </UBadge>
-        <UButton size="2xs">Lanjutkan Tulisan</UButton>
       </div>
       <p class="text-justify">
         {{ blog.description }}

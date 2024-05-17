@@ -7,7 +7,7 @@ const page = useState('page', () => 1)
 
 <template>
   <div class="w-8/12 m-auto">
-    <div class="flex justify-between items-center">
+    <div class="flex justify-between items-center my-2">
       <div class="font-semibold text-xl">Blog</div>
       <UButton to="/dap/blog/create">Create a new Article</UButton>
     </div>

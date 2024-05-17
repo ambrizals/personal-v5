@@ -4,6 +4,7 @@ import { and, eq, like, sql } from "drizzle-orm";
 import { format } from "date-fns";
 import { TRPCError } from "@trpc/server";
 import { cachedComments } from "~/server/utils/cache/blog";
+import { authorizedProcedure } from "../procedure/authorized";
 
 export default router({
   article: publicProcedure
@@ -85,4 +86,43 @@ export default router({
         id: d.id,
       }));
   }),
+  update: authorizedProcedure
+    .input(
+      z.object({
+        id: z.number(),
+        title: z.string().optional(),
+        description: z.string().optional(),
+        isPublished: z.boolean().optional(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      const data = await db.query.Article.findFirst({
+        where: (fields, { eq }) => eq(fields.id, input.id),
+      });
+
+      if (data === undefined) {
+        throw new TRPCError({
+          message: "Article not found",
+          code: "NOT_FOUND",
+        });
+      }
+
+      const update = await db
+        .update(Article)
+        .set({
+          title: input.title,
+          description: input.description,
+          published: input.isPublished,
+        })
+        .where(eq(Article.id, input.id));
+
+      if (update[0].affectedRows > 0) {
+        return true;
+      } else {
+        throw new TRPCError({
+          message: "Server error",
+          code: "INTERNAL_SERVER_ERROR",
+        });
+      }
+    }),
 });
