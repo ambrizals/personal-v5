@@ -10,9 +10,16 @@ const toast = useToast()
 const markdownRef = ref<any>()
 const isTocRendered = ref(false)
 
-const { data, status } = await $client.blog.read.useQuery(params.slug.toString())
+const { data, error, status } = await $client.blog.read.useQuery(params.slug.toString())
 
 useAsyncData(`set-head-${params.slug.toString()}`, async () => {
+  if (error.value?.data) {
+    throw showError({
+      statusCode: error.value.data.httpStatus,
+      message: error.value.message
+    })
+  }
+
   if (data.value) {
     useHead({
       title: data.value.title,
