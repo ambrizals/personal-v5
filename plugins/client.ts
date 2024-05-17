@@ -3,7 +3,7 @@ import { createTRPCNuxtClient, httpBatchLink } from "trpc-nuxt/client";
 import type { AppRouter } from "~/server/trpc/routers";
 
 export default defineNuxtPlugin((nuxtApp) => {
-  const auth = useCookie("auth");
+  const headers = useRequestHeaders();
   let url = "/api/trpc";
 
   if (import.meta.server) {
@@ -18,11 +18,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     links: [
       httpBatchLink({
         url: url,
-        headers: () => {
-          return {
-            auth: auth.value ?? undefined,
-          };
-        },
+        headers: headers,
       }),
     ],
   });
@@ -31,11 +27,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     links: [
       httpLink({
         url: url,
-        headers: () => {
-          return {
-            auth: auth.value ?? undefined,
-          };
-        },
+        headers: headers,
       }),
     ],
   });
