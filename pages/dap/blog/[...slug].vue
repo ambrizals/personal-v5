@@ -5,6 +5,7 @@ import 'md-editor-v3/lib/style.css';
 import type { ExposeParam } from 'md-editor-v3';
 import type { BlogReadOutputAPI } from '~/server/trpc/trpc';
 
+const router = useRouter()
 const colorMode = useColorMode();
 const toast = useToast()
 
@@ -60,6 +61,22 @@ function save() {
       title: 'Sukses diperbarui',
       description: 'Artikel telah berhasil di perbarui'
     }) : '')
+  } else {
+    $client.blog.create.mutate({
+      title: title.value,
+      content: content.value,
+      description: description.value,
+      isPublished: isPublished.value,
+    }).then(res => {
+      articleEntry.value = res
+      toast.add({
+        title: 'Artikel berhasil dibuat',
+        description: 'Artikel telah berhasil tersimpan di database.'
+      })
+      router.replace({ params: {
+        slug: res.slug
+      } })
+    })
   }
 }
 </script>

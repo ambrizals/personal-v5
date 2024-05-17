@@ -5,6 +5,7 @@ import { format } from "date-fns";
 import { TRPCError } from "@trpc/server";
 import { cachedComments } from "~/server/utils/cache/blog";
 import { authorizedProcedure } from "../procedure/authorized";
+import { formatToSlug } from "~/server/utils/string";
 
 export default router({
   article: publicProcedure
@@ -86,6 +87,44 @@ export default router({
         id: d.id,
       }));
   }),
+  create: authorizedProcedure
+    .input(
+      z.object({
+        title: z.string(),
+        description: z.string(),
+        isPublished: z.boolean(),
+        content: z.string(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      const slug = formatToSlug(input.title);
+
+      const data = await db
+        .insert(Article)
+        .values({
+          slug,
+          title: input.title,
+          content: input.content,
+          description: input.description,
+          published: input.isPublished,
+        })
+        .then((res) =>
+          res[0].affectedRows > 0
+            ? db.query.Article.findFirst({
+                where: (fields, { eq }) => eq(fields.slug, slug),
+              })
+            : undefined
+        );
+
+      if (data === undefined) {
+        throw new TRPCError({
+          message: "Something happen",
+          code: "INTERNAL_SERVER_ERROR",
+        });
+      }
+
+      return data;
+    }),
   update: authorizedProcedure
     .input(
       z.object({
