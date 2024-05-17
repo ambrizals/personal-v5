@@ -96,7 +96,7 @@ function save() {
         :on-save="() => save()"
       />
       <div class="w-3/12 px-2">
-        <UButton block variant="outline" :to="`/blog/${articleEntry?.slug}`" target="blank">Preview Article</UButton>
+        <UButton block variant="outline" :to="`/blog/${articleEntry?.slug}`" target="_blank">Preview Article</UButton>
         <div class="h-2" />
         <UButton icon="i-heroicons-trash" block color="red" variant="outline">Delete Article</UButton>
 
