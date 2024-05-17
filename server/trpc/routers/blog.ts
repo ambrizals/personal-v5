@@ -4,7 +4,10 @@ import { and, eq, like, sql } from "drizzle-orm";
 import { format } from "date-fns";
 import { TRPCError } from "@trpc/server";
 import { cachedComments } from "~/server/utils/cache/blog";
-import { authorizedProcedure } from "../procedure/authorized";
+import {
+  authorizedProcedure,
+  preAuthorizedProcedure,
+} from "../procedure/authorized";
 import { formatToSlug } from "~/server/utils/string";
 
 export default router({
@@ -59,23 +62,32 @@ export default router({
         },
       };
     }),
-  read: publicProcedure.input(z.string()).query(async ({ input }) => {
-    const post = await db.query.Article.findFirst({
-      where: (fields, { eq }) => eq(fields.slug, input),
-    });
-
-    if (!post) {
-      throw new TRPCError({
-        code: "NOT_FOUND",
-        message: "Article not found",
+  read: preAuthorizedProcedure
+    .input(z.string())
+    .query(async ({ input, ctx }) => {
+      const post = await db.query.Article.findFirst({
+        where: (fields, { eq }) => eq(fields.slug, input),
       });
-    }
 
-    return {
-      ...post,
-      createdAt: format(post.createdAt, "dd MMM, yyyy"),
-    };
-  }),
+      if (!post) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Article not found",
+        });
+      }
+
+      if (ctx.user === null && post.published === false) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Article not found",
+        });
+      }
+
+      return {
+        ...post,
+        createdAt: format(post.createdAt, "dd MMM, yyyy"),
+      };
+    }),
   comments: publicProcedure.query(async () => {
     const response = await cachedComments();
 
@@ -164,4 +176,16 @@ export default router({
         });
       }
     }),
+  destroy: authorizedProcedure.input(z.number()).mutation(async ({ input }) => {
+    const flag = await db.delete(Article).where(eq(Article.id, input));
+
+    if (flag[0].affectedRows > 0) {
+      return true;
+    } else {
+      throw new TRPCError({
+        message: "Article not found",
+        code: "NOT_FOUND",
+      });
+    }
+  }),
 });

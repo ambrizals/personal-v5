@@ -97,6 +97,8 @@ function save() {
       />
       <div class="w-3/12 px-2">
         <UButton block variant="outline" :to="`/blog/${articleEntry?.slug}`" target="blank">Preview Article</UButton>
+        <div class="h-2" />
+        <UButton icon="i-heroicons-trash" block color="red" variant="outline">Delete Article</UButton>
 
         <div class="h-4" />
 
@@ -122,7 +124,7 @@ function save() {
           <template #header>
             <CompTitle label="Deskripsi" size="base" />
           </template>          
-          <UTextarea v-model="description" variant="outline" color="primary" size="lg" rows="7" />
+          <UTextarea v-model="description" variant="outline" color="primary" size="lg" :rows="7" />
         </UCard>
 
         <div class="h-4" />

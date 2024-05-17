@@ -6,8 +6,8 @@ import type { H3Event } from "h3";
  * @link https://trpc.io/docs/context
  */
 export const createContext = (event: H3Event) => {
-  const cookies = parseCookies(event);
-  const authorization: string = cookies.auth;
+  const headers = getRequestHeaders(event);
+  const authorization: string | undefined = headers.auth;
 
   return {
     authorization,
