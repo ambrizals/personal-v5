@@ -144,6 +144,7 @@ export default router({
         title: z.string().optional(),
         description: z.string().optional(),
         isPublished: z.boolean().optional(),
+        content: z.string().optional(),
       })
     )
     .mutation(async ({ input }) => {
@@ -164,6 +165,7 @@ export default router({
           title: input.title,
           description: input.description,
           published: input.isPublished,
+          content: input.content,
         })
         .where(eq(Article.id, input.id));
 

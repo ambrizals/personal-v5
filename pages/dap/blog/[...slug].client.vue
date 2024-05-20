@@ -60,6 +60,7 @@ function save() {
       title: title.value,
       description: description.value,
       isPublished: isPublished.value,
+      content: content.value,
     }).then(res => res ? toast.add({
       title: 'Sukses diperbarui',
       description: 'Artikel telah berhasil di perbarui'
@@ -142,10 +143,6 @@ function previewImage(file: File) {
   };
   reader.readAsDataURL(file);
 };
-
-watch(fileCover, (value) => {
-  console.log(value)
-})
 </script>
 
 <template>
@@ -218,7 +215,13 @@ watch(fileCover, (value) => {
 
         <div class="h-4" />
 
-        <UCard>
+        <UCard :ui="{
+          body: {
+            base: '',
+            background: '',
+            padding: 'px-4 py-2',
+          },          
+        }">
           <template #header>
             <CompTitle label="Access Panel" size="base" />
           </template>          
@@ -236,7 +239,13 @@ watch(fileCover, (value) => {
 
         <div class="h-4" />
 
-        <UCard>
+        <UCard :ui="{
+          body: {
+            base: '',
+            background: '',
+            padding: 'px-4 py-2',
+          },
+        }">
           <template #header>
             <CompTitle label="Deskripsi" size="base" />
           </template>          
