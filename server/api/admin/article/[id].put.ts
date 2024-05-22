@@ -2,28 +2,46 @@ import { join } from "path";
 import { z } from "zod";
 import fs from "fs";
 import sharp from "sharp";
+import { eq } from "drizzle-orm";
 
 export default defineEventHandler(async (event) => {
+  const { id } = getRouterParams(event);
+
+  const current = await db.query.Article.findFirst({
+    where: (fields, { eq }) => eq(fields.id, Number(id)),
+  });
+
+  if (current === undefined) {
+    throw createError({
+      status: 404,
+      statusMessage: "Not found",
+    });
+  }
+
   const runtimeConfig = useRuntimeConfig();
   const body = await readFormData(event);
   const payload: Record<string, any> = {};
   body.forEach((value, key) => (payload[key] = value));
 
   const rules = z.object({
-    title: z.string(),
-    content: z.string(),
-    description: z.string(),
+    title: z.string().optional(),
+    content: z.string().optional(),
+    description: z.string().optional(),
     isPublished: z
       .custom<string>()
       .transform((published) => {
         if (published !== undefined) {
-          return Boolean(published);
+          return JSON.parse(published);
         }
         return published;
       })
       .refine((value) => value !== undefined, {
         message: "Is published is required",
-      }),
+      })
+      .refine((value) => typeof value === "boolean", {
+        message: "Is published must boolean",
+      })
+      .optional(),
     cover: z
       .custom<File>()
       .optional()
@@ -39,18 +57,6 @@ export default defineEventHandler(async (event) => {
       status: 422,
       statusMessage: "VALIDATION_FAIL",
       cause: form.error.issues,
-    });
-  }
-
-  const duplicateFlag = await db.query.Article.findFirst({
-    where: (fields, { eq }) => eq(fields.slug, formatToSlug(form.data.title)),
-  });
-
-  if (duplicateFlag) {
-    throw createError({
-      status: 422,
-      statusMessage: "ARTICLE_DUPLICATED",
-      message: "Article is already created !",
     });
   }
 
@@ -76,6 +82,14 @@ export default defineEventHandler(async (event) => {
         .toBuffer();
       await fs.promises.writeFile(newFilePath, Buffer.from(buffer));
       await fs.promises.writeFile(newThumbsPath, thumbs);
+
+      if (current.cover) {
+        fs.rm(join(uploadDir, current.cover), () => {});
+      }
+
+      if (current.thumbnail) {
+        fs.rm(join(uploadDir, current.thumbnail), () => {});
+      }
     } catch (err) {
       throw createError({
         status: 422,
@@ -86,9 +100,9 @@ export default defineEventHandler(async (event) => {
   }
 
   const result = await db
-    .insert(Article)
-    .values({
-      slug: formatToSlug(form.data.title),
+    .update(Article)
+    .set({
+      slug: form.data.title ? formatToSlug(form.data.title) : current.slug,
       title: form.data.title,
       content: form.data.content,
       published: form.data.isPublished,
@@ -96,15 +110,23 @@ export default defineEventHandler(async (event) => {
       cover: form.data.cover?.name,
       thumbnail: form.data.cover?.name,
     })
+    .where(eq(Article.id, current.id))
     .then(async (res) => {
       if (res[0].affectedRows > 0) {
-        const data = await db.query.Article.findFirst({
-          where: (fields, { eq }) =>
-            eq(fields.slug, formatToSlug(form.data.title)),
+        const curr = await db.query.Article.findFirst({
+          where: (fields, { eq }) => eq(fields.id, current.id),
         });
-        return data;
-      } else return undefined;
+        return curr;
+      }
+      return undefined;
     });
 
-  return result;
+  if (result) {
+    return result;
+  } else {
+    throw createError({
+      message: "Something wrong in server",
+      statusCode: 422,
+    });
+  }
 });

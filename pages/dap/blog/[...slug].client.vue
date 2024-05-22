@@ -78,18 +78,28 @@ async function onLoad() {
 
 function save() {
   if (articleEntry.value) {
-    $client.blog.update.mutate({
-      id: articleEntry.value.id,
-      title: title.value,
-      description: description.value,
-      isPublished: isPublished.value,
-      content: content.value,
+    const formData = new FormData()
+    formData.set('title', title.value)
+    formData.set('content', content.value)
+    formData.set('description', description.value)
+    formData.set('isPublished', isPublished.value.toString())
+    if (fileCover.value) {
+      formData.set('cover', fileCover.value)
+    }    
+
+    $fetch(`/api/admin/article/${articleEntry?.value.id}`, {
+      method: 'PUT',
+      body: formData,
+      headers
     }).then(res => {
       if (res) {
+        articleEntry.value = res
         toast.add({
-          title: 'Sukses diperbarui',
-          description: 'Artikel telah berhasil di perbarui'
+          title: 'Artikel berhasil diupdate',
+          description: 'Artikel telah berhasil diperbarui, silakan di cek'
         })
+        fileCover.value = null
+        filePreview.value = null
       }
     })
   } else {
