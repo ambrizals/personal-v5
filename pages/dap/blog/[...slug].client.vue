@@ -1,15 +1,21 @@
 
 <script setup lang="ts">
+import type { FormSubmitEvent } from '#ui/types'
+
 import { MdEditor } from 'md-editor-v3';
 import 'md-editor-v3/lib/style.css';
 import type { ExposeParam } from 'md-editor-v3';
 import type { BlogReadOutputAPI } from '~/server/trpc/trpc';
+import { z } from 'zod';
 
 const headers = useRequestHeaders();
+const { public: runtimeConfig } = useRuntimeConfig()
 
 const router = useRouter()
 const colorMode = useColorMode();
 const toast = useToast()
+const deleteModal = ref(false)
+const loadingDelete = ref(false)
 
 const isDark = computed({
   get() {
@@ -32,8 +38,22 @@ const isPublished = ref(false)
 const editorRef = ref<ExposeParam>();
 const fileCover = ref<File | null>(null)
 const filePreview = ref<string | null>(null)
+const isNew = ref(true)
 
 const autoSave = ref(false)
+
+const deleteSchema = z.object({
+  title: z.string().refine((value) => value === articleEntry.value?.title, {
+    message: 'Confirmation input must same like prompt'
+  })
+});
+
+type DeleteSchema = z.output<typeof deleteSchema>;
+
+const formDeleteState = reactive<{
+  title?: string;
+}>({});
+
 
 useAsyncData(`editor`, () => onLoad())
 
@@ -41,6 +61,7 @@ async function onLoad() {
   const slug = params.slug.toString()
 
   if (slug !== 'create') {
+    isNew.value = false
     const data = await $client.blog.read.query(params.slug.toString())
     content.value = data.content ?? ''
     title.value = data.title
@@ -63,10 +84,14 @@ function save() {
       description: description.value,
       isPublished: isPublished.value,
       content: content.value,
-    }).then(res => res ? toast.add({
-      title: 'Sukses diperbarui',
-      description: 'Artikel telah berhasil di perbarui'
-    }) : '')
+    }).then(res => {
+      if (res) {
+        toast.add({
+          title: 'Sukses diperbarui',
+          description: 'Artikel telah berhasil di perbarui'
+        })
+      }
+    })
   } else {
     const formData = new FormData()
     formData.set('title', title.value)
@@ -156,6 +181,24 @@ function previewImage(file: File) {
   };
   reader.readAsDataURL(file);
 };
+
+function doDeleteArticle(event: FormSubmitEvent<DeleteSchema>) {
+  if (event) {
+    if (articleEntry.value) {
+      $client.blog.destroy.mutate(articleEntry.value.id).then(res => {
+        if (res) {
+          router.replace('/dap/blog')
+          toast.add({
+            title: 'Berhasil dihapus',
+            description: 'Artikel telah berhasil di hapus'
+          })
+        }
+      }).finally(() => {
+        loadingDelete.value = false
+      })
+    }
+  }
+}
 </script>
 
 <template>
@@ -175,16 +218,23 @@ function previewImage(file: File) {
       </div>
     </div>
     <div class="flex flex-1 h-full">
-      <MdEditor
-        class="!h-[92%]" ref="editorRef" v-model="content" language="en-US" :theme="isDark ? 'dark': 'light'"
-        :on-save="() => save()"
-      />
-      <div class="w-3/12 px-2">
-        <UButton block variant="outline" :to="`/blog/${articleEntry?.slug}`" target="_blank">Preview Article</UButton>
-        <div class="h-2" />
-        <UButton icon="i-heroicons-trash" block color="red" variant="outline">Delete Article</UButton>
+      <div class="flex w-[81%] flex-col gap-2">
+        <UInput size="xs" :model-value="runtimeConfig.appUrl+'/blog/'+articleEntry?.slug" disabled>
+          <template #trailing>
+            <span class="text-gray-500 dark:text-gray-400 text-xs">Link Artikel</span>
+          </template>
+        </UInput>
+        <MdEditor
+          class="!h-[87%]" ref="editorRef" v-model="content" language="en-US" :theme="isDark ? 'dark': 'light'"
+          :on-save="() => save()"
+        />
+      </div>
+      <div class="flex-1 px-2">
+        <UButton v-if="isNew === false" block variant="outline" :to="`/blog/${articleEntry?.slug}`" target="_blank">Preview Article</UButton>
+        <div v-if="isNew === false" class="h-2" />
+        <UButton v-if="isNew === false" icon="i-heroicons-trash" block color="red" variant="outline" @click="deleteModal = true">Delete Article</UButton>
 
-        <div class="h-4" />
+        <div v-if="isNew === false" class="h-4" />
 
         <div class="relative group">
           <div v-if="articleEntry?.thumbnail && filePreview === null" class="relative"
@@ -199,10 +249,7 @@ function previewImage(file: File) {
             />   
             <NuxtImg class="w-full rounded-md" provider="localEnhance" :src="`cover/${articleEntry?.thumbnail}`" />
           </div>
-          <!-- <div v-if="articleEntry?.thumbnail" class="rounded-md bg-gray-500 flex-col justify-center items-center text-center p-4 cursor-pointer text-white bg-opacity-80 w-full h-full absolute top-0 group-hover:flex hidden">
-            <UIcon name="i-heroicons-cloud-arrow-down-solid" class="text-[48px]" />
-            <div>Click or drop an image to change cover</div>
-          </div> -->
+
           <!-- Upload drag & drop -->
           <PrompDragDrop
             v-else-if="(articleEntry?.thumbnail === undefined || articleEntry?.thumbnail === null) && filePreview === null"
@@ -267,4 +314,41 @@ function previewImage(file: File) {
       </div>
     </div>
   </div>
+  <UModal v-model="deleteModal">
+    <UForm
+      :schema="deleteSchema"
+      :state="formDeleteState"
+      @submit="doDeleteArticle"
+    >
+      <UCard :ui="{ ring: '', divide: 'divide-y divide-gray-100 dark:divide-gray-800', body: {
+        padding: ''
+      } }">
+        <template #header>
+          <div>Konfirmasi Hapus</div>
+        </template>
+
+        <div class="relative">
+          <div v-if="articleEntry?.published === true" class="absolute top-0 z-30 w-full h-full bg-black bg-opacity-70 dark:bg-opacity-85 text-white flex flex-col justify-center items-center gap-4">
+            <UIcon name="i-heroicons-hand-raised-20-solid" class="text-[4rem]" />
+            <div class="text-center">
+              Tidak dapat menghapus artikel yang masih dipublikasikan, silakan ubah artikel tersebut menjadi tidak terpublish.
+            </div>
+          </div>
+          <div class="flex flex-col gap-2 text-justify px-6 py-8">
+            <div>Jika anda ingin menghapus artikel ini dengan mengetik <UBadge variant="outline" size="xs" color="red">{{ articleEntry?.title }}</UBadge> pada input dibawah</div>
+            <UFormGroup name="title">
+              <UInput v-model="formDeleteState.title" placeholder="Silakan ketik disini" />
+            </UFormGroup>
+          </div>
+        </div>
+
+        <template #footer>
+          <div class="flex gap-2">
+            <UButton type="submit" color="red" :loading="loadingDelete" :disabled="articleEntry?.published">Konfirmasi</UButton>
+            <UButton @click="deleteModal = false">Batal</UButton>
+          </div>
+        </template>
+      </UCard>
+    </UForm>
+  </UModal>  
 </template>
