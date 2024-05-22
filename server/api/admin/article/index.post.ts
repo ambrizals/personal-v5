@@ -1,6 +1,10 @@
+import { join } from "path";
 import { z } from "zod";
+import fs from "fs";
+import sharp from "sharp";
 
 export default defineEventHandler(async (event) => {
+  const runtimeConfig = useRuntimeConfig();
   const body = await readFormData(event);
   const payload: Record<string, any> = {};
   body.forEach((value, key) => (payload[key] = value));
@@ -50,6 +54,38 @@ export default defineEventHandler(async (event) => {
     });
   }
 
+  if (form.data.cover) {
+    const uploadDir = join(runtimeConfig.rootDirectory, "storage/cover");
+    const thumbsDir = join(runtimeConfig.rootDirectory, "storage/thumbs");
+    // Check if directory is exists, so app can create recursively
+    await fs.promises.mkdir(uploadDir, { recursive: true });
+    await fs.promises.mkdir(thumbsDir, { recursive: true });
+
+    const newFilePath = join(uploadDir, form.data.cover.name);
+    const newThumbsPath = join(thumbsDir, form.data.cover.name);
+
+    // Save the uploaded file
+    try {
+      const buffer = await form.data.cover.arrayBuffer();
+      const thumbs = await sharp(Buffer.from(buffer))
+        .resize({
+          width: 256,
+          height: 256,
+          fit: "cover",
+        })
+        .toBuffer();
+      await fs.promises.writeFile(newFilePath, Buffer.from(buffer));
+      await fs.promises.writeFile(newThumbsPath, thumbs);
+    } catch (err) {
+      console.log(err);
+      throw createError({
+        status: 422,
+        statusMessage: "UPLOAD ERROR",
+        cause: "MOVE_FILE_ERR",
+      });
+    }
+  }
+
   const result = await db
     .insert(Article)
     .values({
@@ -58,6 +94,8 @@ export default defineEventHandler(async (event) => {
       content: form.data.content,
       published: form.data.isPublished,
       description: form.data.description,
+      cover: form.data.cover?.name,
+      thumbnail: form.data.cover?.name,
     })
     .then(async (res) => {
       if (res[0].affectedRows > 0) {

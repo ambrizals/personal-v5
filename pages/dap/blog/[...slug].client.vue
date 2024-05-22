@@ -5,6 +5,8 @@ import 'md-editor-v3/lib/style.css';
 import type { ExposeParam } from 'md-editor-v3';
 import type { BlogReadOutputAPI } from '~/server/trpc/trpc';
 
+const headers = useRequestHeaders();
+
 const router = useRouter()
 const colorMode = useColorMode();
 const toast = useToast()
@@ -66,20 +68,31 @@ function save() {
       description: 'Artikel telah berhasil di perbarui'
     }) : '')
   } else {
-    $client.blog.create.mutate({
-      title: title.value,
-      content: content.value,
-      description: description.value,
-      isPublished: isPublished.value,
+    const formData = new FormData()
+    formData.set('title', title.value)
+    formData.set('content', content.value)
+    formData.set('description', description.value)
+    formData.set('isPublished', isPublished.value.toString())
+    if (fileCover.value) {
+      formData.set('cover', fileCover.value)
+    }    
+
+
+    $fetch('/api/admin/article', {
+      body: formData,
+      method: 'POST',
+      headers
     }).then(res => {
-      articleEntry.value = res
-      toast.add({
-        title: 'Artikel berhasil dibuat',
-        description: 'Artikel telah berhasil tersimpan di database.'
-      })
-      router.replace({ params: {
-        slug: res.slug
-      } })
+      if (res) {
+        articleEntry.value = res
+        toast.add({
+          title: 'Artikel berhasil dibuat',
+          description: 'Artikel telah berhasil tersimpan di database.'
+        })
+        router.replace({ params: {
+          slug: res.slug
+        } })      
+      }
     })
   }
 }

@@ -1,7 +1,4 @@
 import "./env/server";
-import vue from "@vitejs/plugin-vue";
-import ckeditor5 from "@ckeditor/vite-plugin-ckeditor5";
-import { fileURLToPath, URL } from "node:url";
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -41,6 +38,7 @@ export default defineNuxtConfig({
       appUrl: process.env.NUXT_PUBLIC_APP_URL,
     },
     port: Number(process.env.PORT ?? "3000"), // default: 3000
+    rootDirectory: process.cwd(),
   },
 
   image: {

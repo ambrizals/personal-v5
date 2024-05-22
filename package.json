@@ -39,6 +39,7 @@
     "markdown-it-task-lists": "^2.1.1",
     "md-editor-v3": "^4.15.0",
     "mysql2": "^3.9.7",
+    "sharp": "^0.33.4",
     "tocbot": "^4.27.20",
     "trpc-nuxt": "^0.10.21",
     "zod": "^3.22.4"
