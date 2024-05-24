@@ -1,50 +1,20 @@
 <script setup lang="ts">
-import type { ArticleOutputAPI } from '~/server/trpc/trpc';
-
 const { $client } = useNuxtApp()
 
 const { public: runtimeConfig } = useRuntimeConfig()
-
-// const blogs = useState<ArticleOutputAPI>('blogs')
-
-// useAsyncData(async () => {
-//   if (import.meta.server) {
-//     blogs.value = await $client.blog.article.query({ page: 1, perPage: 2 })
-//   }
-// })
-
 const { data: blogs } = await $client.blog.article.useQuery({ page: 1, perPage: 2 })
+
+useSeoMeta({
+  title: 'Beranda',
+  description:
+  "Situs ini adalah situs pribadi milik Ambrizal Suryadinata yang memuat konten mengenai teknologi ataupun pengalaman menarik.",
+  ogDescription:
+  "Situs ini adalah situs pribadi milik Ambrizal Suryadinata yang memuat konten mengenai teknologi ataupun pengalaman menarik.",
+  ogUrl: runtimeConfig.appUrl,
+})
 
 
 useHead({
-  title: 'Beranda',
-  meta: [
-    {
-      hid: "description",
-      name: "description",
-      content:
-        "Situs ini adalah situs pribadi milik Ambrizal Suryadinata yang memuat konten mengenai teknologi ataupun pengalaman menarik.",
-    },
-    {
-      hid: "og:title",
-      name: "og:title",
-      property: "og:title",
-      content: "Beranda",
-    },
-    {
-      hid: "og:description",
-      name: "og:description",
-      property: "og:description",
-      content:
-        "Situs ini adalah situs pribadi milik Ambrizal Suryadinata yang memuat konten mengenai teknologi ataupun pengalaman menarik.",
-    },
-    {
-      hid: "og:url",
-      name: "og:url",
-      property: "og:url",
-      content: runtimeConfig.appUrl,
-    },
-  ],
   link: [
     {
       rel: "canonical",

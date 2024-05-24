@@ -16,6 +16,10 @@ const isTocRendered = ref(false)
 const { data, error, status } = await $client.blog.read.useQuery(params.slug.toString())
 
 useAsyncData(`set-head-${params.slug.toString()}`, async () => {
+  useServerSeoMeta({
+    robots: 'index, follow'
+  })
+
   if (error.value?.data) {
     throw showError({
       statusCode: error.value.data.httpStatus,
@@ -24,69 +28,21 @@ useAsyncData(`set-head-${params.slug.toString()}`, async () => {
   }
 
   if (data.value) {
-    useHead({
+    useSeoMeta({
       title: data.value.title,
-      meta: [
-        {
-          hid: "description",
-          name: "description",
-          content: data.value.description,
-        },
-        {
-          hid: "og:type",
-          property: "og:type",
-          content: "article",
-        },
-        {
-          hid: "article:published_time",
-          name: "article:published_time",
-          property: "article:published_time",
-          content: data.value.createdAt,
-        },
-        {
-          hid: "article:publisher",
-          name: "article:publisher",
-          property: "article:publisher",
-          content: "https://web.facebook.com/ambrizalsuryadinata",
-        },
-        {
-          hid: "article:author",
-          name: "article:author",
-          property: "article:author",
-          content: "https://www.facebook.com/ambrizalsuryadinatasb",
-        },
-        {
-          hid: "og:title",
-          name: "og:title",
-          property: "og:title",
-          content: data.value.title,
-        },
-        {
-          hid: "og:description",
-          name: "og:description",
-          property: "og:description",
-          content: data.value.description,
-        },
-        {
-          hid: "og:url",
-          name: "og:url",
-          property: "og:url",
-          content: runtimeConfig.appUrl + fullPath,
-        },
-        // {
-        //   hid: "og:image",
-        //   name: "og:image",
-        //   property: "og:image",
-        //   content: this.meta.image,
-        //   // content: this.article.posts.cover_article ? this.imageCDN + "cover/" + this.article.posts.cover_article : 'Sedang memuat gambar',
-        // },
-        // {
-        //   hid: "og:image:type",
-        //   name: "og:image:type",
-        //   property: "og:image:type",
-        //   content: "image/jpeg",
-        // },
-      ],
+      ogTitle: data.value.title,
+      description: data.value.description,
+      ogDescription: data.value.description,
+      ogType: 'article',
+      ogUrl: runtimeConfig.appUrl + fullPath,
+      ogImage: runtimeConfig.assetUrl + '/cover/' + data.value.cover,
+      ogImageType: 'image/jpeg',
+      articlePublishedTime: data.value.createdAt,
+      articleAuthor: ["https://www.facebook.com/ambrizalsuryadinatasb"],
+      publisher: "https://www.facebook.com/ambrizalsuryadinata",
+    })
+
+    useHead({
       link: [
         {
           rel: "canonical",

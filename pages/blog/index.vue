@@ -30,35 +30,16 @@ watch(search, (value) => {
   , 1000)
 })
 
-useHead({
+useSeoMeta({
   title: 'Blog',
-  meta: [
-    {
-      hid: "description",
-      name: "description",
-      content:
-        "Blog menarik yang ditulis dengan berbagai tema menarik seputar teknologi, pengalaman pribadi, serta tips - tips yang mungkin berguna",
-    },
-    {
-      hid: "og:title",
-      name: "og:title",
-      property: "og:title",
-      content: "Blog",
-    },
-    {
-      hid: "og:description",
-      name: "og:description",
-      property: "og:description",
-      content:
-        "Blog menarik yang ditulis dengan berbagai tema menarik seputar teknologi, pengalaman pribadi, serta tips - tips yang mungkin berguna",
-    },
-    {
-      hid: "og:url",
-      name: "og:url",
-      property: "og:url",
-      content: runtimeConfig.appUrl + fullPath,
-    },
-  ],
+  description: 
+  "Blog menarik yang ditulis dengan berbagai tema menarik seputar teknologi, pengalaman pribadi, serta tips - tips yang mungkin berguna",
+  ogDescription:
+  "Blog menarik yang ditulis dengan berbagai tema menarik seputar teknologi, pengalaman pribadi, serta tips - tips yang mungkin berguna",
+  ogUrl: runtimeConfig.appUrl + fullPath,
+})
+
+useHead({
   link: [
     {
       rel: "canonical",
@@ -71,6 +52,7 @@ useHead({
 <template>
   <div class="flex md:flex-row flex-col gap-2">
     <div class="w-full md:w-9/12 px-8 py-4">
+      <h1 class="hidden">Blog</h1>
       <div id="search">
         <UInput v-model="search" size="xl" placeholder="Silakan masukan keyword judul yang ingin dicari..." />
       </div>
