@@ -36,6 +36,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       appUrl: process.env.NUXT_PUBLIC_APP_URL,
+      assetUrl: process.env.NUXT_PUBLIC_ASSET_URL,
     },
     port: Number(process.env.PORT ?? "3000"), // default: 3000
     rootDirectory: process.cwd(),
@@ -47,9 +48,6 @@ export default defineNuxtConfig({
       localEnhance: {
         name: "localEnhance",
         provider: "~/providers/image.ts",
-        options: {
-          baseURL: "https://cbs.ambrizal.net/",
-        },
       },
     },
   },

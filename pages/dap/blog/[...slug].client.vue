@@ -1,10 +1,11 @@
 
 <script setup lang="ts">
 import type { FormSubmitEvent } from '#ui/types'
+import MarkdownItVideo from 'markdown-it-video'
 
-import { MdEditor } from 'md-editor-v3';
+import { MdEditor, config } from 'md-editor-v3';
 import 'md-editor-v3/lib/style.css';
-import type { ExposeParam } from 'md-editor-v3';
+import type { ExposeParam, UploadImgCallBack } from 'md-editor-v3';
 import type { BlogReadOutputAPI } from '~/server/trpc/trpc';
 import { z } from 'zod';
 
@@ -16,6 +17,12 @@ const colorMode = useColorMode();
 const toast = useToast()
 const deleteModal = ref(false)
 const loadingDelete = ref(false)
+
+config({
+  markdownItConfig(md, options) {
+    md.use(MarkdownItVideo)
+  },
+})
 
 const isDark = computed({
   get() {
@@ -209,6 +216,18 @@ function doDeleteArticle(event: FormSubmitEvent<DeleteSchema>) {
     }
   }
 }
+
+function onUploadImg(files: File[], callback: UploadImgCallBack) {
+  const formData = new FormData()
+  files.forEach((file, index) => formData.append(`file-${index}`, file))
+  $fetch('/api/admin/image/posts', {
+    method: 'POST',
+    body: formData,
+    headers
+  }).then(res => {
+    callback(res)
+  })
+}
 </script>
 
 <template>
@@ -235,6 +254,7 @@ function doDeleteArticle(event: FormSubmitEvent<DeleteSchema>) {
           </template>
         </UInput>
         <MdEditor
+          @on-upload-img="onUploadImg"
           class="!h-[87%]" ref="editorRef" v-model="content" language="en-US" :theme="isDark ? 'dark': 'light'"
           :on-save="() => save()"
         />

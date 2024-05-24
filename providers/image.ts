@@ -8,9 +8,10 @@ export const getImage: ProviderGetImage = (
   src,
   { modifiers = {}, baseURL } = {}
 ) => {
+  const { public: config } = useRuntimeConfig();
   if (!baseURL) {
     // also support runtime config
-    baseURL = useRuntimeConfig().public.siteUrl;
+    baseURL = config.assetUrl;
   }
 
   const operations = operationsGenerator(modifiers);

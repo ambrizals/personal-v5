@@ -62,7 +62,7 @@ export default defineEventHandler(async (event) => {
 
   if (form.data.cover) {
     const uploadDir = join(runtimeConfig.rootDirectory, "storage/cover");
-    const thumbsDir = join(runtimeConfig.rootDirectory, "storage/thumbs");
+    const thumbsDir = join(runtimeConfig.rootDirectory, "storage/thumbnails");
     // Check if directory is exists, so app can create recursively
     await fs.promises.mkdir(uploadDir, { recursive: true });
     await fs.promises.mkdir(thumbsDir, { recursive: true });

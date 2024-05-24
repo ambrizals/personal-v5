@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import '~/assets/css/blog.css'
+import 'medium-zoom/dist/style.css'
+
 import tocbot from 'tocbot'
+import mediumZoom from 'medium-zoom'
 
 const { params, fullPath } = useRoute()
 const { $client } = useNuxtApp()
@@ -127,6 +130,7 @@ function renderToc() {
 
 onMounted(() => {
   renderToc()
+  mediumZoom('[data-zoomable]')
 })
 
 function copyCurrentUrlToClipboard(): void {
@@ -166,7 +170,7 @@ watch(status, (value) => {
           <Markdown :ref="markdownRef" :source="data!.content!" class="text-justify" />
         </div>
       </div>
-      <div class="flex-1 md:order-2 order-1">
+      <div class="flex-1 md:order-2 order-1 pr-2">
         <div class="flex flex-col my-2 gap-1 py-4 px-8 md:px-0">
           <div class="py-2 font-semibold">Share On</div>
           <NuxtLink :href="`https://www.facebook.com/sharer/sharer.php?u=${runtimeConfig.appUrl + fullPath}`">

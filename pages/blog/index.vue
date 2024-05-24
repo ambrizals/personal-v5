@@ -94,8 +94,8 @@ useHead({
       <div class="h-2" />
       <div class="sticky top-1">
         <CompTitle label="Komentar Terakhir" />
-        <div class="border rounded-md">
-          <div class="px-4 py-2 border-b" v-for="comment in comments" :key="comment.id">
+        <div class="border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-900">
+          <div class="px-4 py-2 border-b border-gray-300 dark:border-gray-600" v-for="comment in comments" :key="comment.id">
             <div class="font-semibold">{{ comment.name }}</div>
             <div>{{ comment.message }}</div>
           </div>

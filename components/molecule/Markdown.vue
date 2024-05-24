@@ -5,6 +5,7 @@ import MarkdownIt from "markdown-it";
 import MarkdownItAnchor from "markdown-it-anchor";
 import MarkdownItHighlightjs from "markdown-it-highlightjs";
 import MarkdownItNamedCodeBlock from 'markdown-it-named-code-blocks'
+import MarkdownItVideo from 'markdown-it-video'
 
 const markdown = new MarkdownIt()
   .use(MarkdownItAnchor, {
@@ -18,6 +19,9 @@ const markdown = new MarkdownIt()
   })
   .use(MarkdownItHighlightjs)
   .use(MarkdownItNamedCodeBlock)
+  .use(MarkdownItVideo, {
+    youtube: { width: '100%', height: 390 },
+  })
 
 defineProps({
   source: {
@@ -26,8 +30,16 @@ defineProps({
   }
 });
 
+const defaultRender = markdown.renderer.rules.image || function(tokens, idx, options, env, self) {
+  return self.renderToken(tokens, idx, options);
+};
 
 function renderMd(src: string, env?: any) {
+  markdown.renderer.rules.image = function(tokens, idx, options, env, self) {
+    const token = tokens[idx];
+    token.attrPush(['data-zoomable', '']);
+    return defaultRender(tokens, idx, options, env, self);
+  };
   return markdown.render(src, env)
 }
 </script>

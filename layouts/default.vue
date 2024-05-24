@@ -78,7 +78,7 @@ useHead({
 
     <div class="flex min-h-screen">
       <div
-        class="hidden md:flex flex-1 flex-col dark:bg-gray-900 bg-gray-50 px-4 py-2 gap-2"
+        class="hidden md:flex flex-1 flex-col dark:bg-gray-900 bg-gray-50 px-4 py-2 gap-2 border-r border-gray-300 dark:border-gray-600"
       >
         <div class="sticky top-4 flex flex-col gap-2">
           <div class="flex justify-between items-center">
