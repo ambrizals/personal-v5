@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { ItemList } from 'schema-dts'
 const { $client } = useNuxtApp()
 const { query, fullPath } = useRoute()
 const { public: runtimeConfig } = useRuntimeConfig()
@@ -9,6 +10,7 @@ const search = useState('search', () => '')
 const searchDebounce = ref<NodeJS.Timeout>()
 
 const { data, status } = await $client.blog.article.useQuery({ page: Number(query.page?.toString() ?? '1'), perPage: 10 })
+
 const { data: comments, status: commentStatus } = await $client.blog.comments.useQuery()
 
 watch(page, (value) => {

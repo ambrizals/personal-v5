@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { Article } from 'schema-dts'
+
 import '~/assets/css/blog.css'
 import 'medium-zoom/dist/style.css'
 
@@ -28,6 +30,18 @@ useAsyncData(`set-head-${params.slug.toString()}`, async () => {
   }
 
   if (data.value) {
+    defineArticle({
+      headline: data.value.title,
+      description: data.value.description,
+      datePublished: data.value.createdAt,
+      dateModified: data.value.updatedAt,
+      author: {
+        name: 'Ambrizal Suryadinata',
+        url: 'https://ambrizal.net'
+      },
+      image: runtimeConfig.assetUrl + '/cover/' + data.value.cover,
+    } as Article)
+
     useSeoMeta({
       title: data.value.title,
       ogTitle: data.value.title,
@@ -111,18 +125,18 @@ watch(status, (value) => {
 </script>
 
 <template>
-  <div>
+  <div itemscope itemtype="https://schema.org/Article">
     <div class="w-full bg-gray-600 h-56 md:h-72 overflow-hidden">
-      <NuxtImg class="object-cover object-center w-full h-auto md:h-[388px]" :src="`/cover/${data?.cover}`" />
+      <NuxtImg itemprop="image" class="object-cover object-center w-full h-auto md:h-[388px]" :src="`/cover/${data?.cover}`" />
     </div>
     <div class="py-4 px-8 border-b">
       <p>{{ data?.createdAt }}</p>
       <h1 class="text-4xl mb-2">{{ data?.title }}</h1>
-      <p class="text-gray-600 dark:text-gray-300">{{ data?.description }}</p>
+      <p class="text-gray-600 dark:text-gray-300" itemprop="abstract">{{ data?.description }}</p>
     </div>
     <div class="flex md:flex-row flex-col gap-2">
       <div class="w-full md:w-9/12 md:order-1 order-2">
-        <div v-if="status === 'success'" class="py-4 px-8 blog">
+        <div v-if="status === 'success'" class="py-4 px-8 blog" itemprop="articleBody">
           <Markdown :ref="markdownRef" :source="data!.content!" class="text-justify" />
         </div>
       </div>

@@ -13,6 +13,13 @@ useSeoMeta({
   ogUrl: runtimeConfig.appUrl,
 })
 
+useSchemaOrg([
+  defineWebPage({
+    name: 'Beranda',
+    abstract: 'Halaman beranda personal web ambrizal'
+  })
+])
+
 
 useHead({
   link: [

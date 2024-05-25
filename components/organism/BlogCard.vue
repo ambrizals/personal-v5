@@ -12,11 +12,13 @@ defineProps<{
 <template>
   <UCard
     class="flex-1"
+    itemscope
+    itemtype="https://schema.org/Blog"    
   >
     <div class="flex flex-col md:flex-row gap-4">
       <div class="flex items-center md:items-start gap-4">
       <div class="bg-gray-700 w-16 h-16 md:w-32 md:h-32">
-        <NuxtImg class="object-cover h-16 md:h-32" provider="localEnhance" :src="`cover/${blog.thumbnail}`" />
+        <NuxtImg itemprop="image" class="object-cover h-16 md:h-32" provider="localEnhance" :src="`cover/${blog.thumbnail}`" />
       </div>
       <div class="block md:hidden">
         <div class="text-xs">{{ blog.createdAt }}</div>
@@ -26,9 +28,9 @@ defineProps<{
       </div>
     </div>
     <div class="flex flex-col flex-1">
-      <div class="text-sm hidden md:block">{{ blog.createdAt }}</div>
+      <div class="text-sm hidden md:block" itemprop="datePublished">{{ blog.createdAt }}</div>
       <NuxtLink :to="override?.to ? override?.to : `/blog/${blog.slug}`">
-        <h2 class="text-2xl hidden md:block font-bold">
+        <h2 class="text-2xl hidden md:block font-bold" itemprop="name">
           {{ blog.title }}
         </h2>
       </NuxtLink>

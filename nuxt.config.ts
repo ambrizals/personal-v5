@@ -3,7 +3,13 @@ import "./env/server";
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   ssr: true,
-  modules: ["@nuxt/content", "@nuxt/ui", "@nuxt/image", "nuxt-disqus"],
+  modules: [
+    "@nuxt/content",
+    "@nuxt/ui",
+    "@nuxt/image",
+    "nuxt-disqus",
+    "nuxt-schema-org",
+  ],
 
   devServer: {
     port: 3000,
@@ -40,6 +46,10 @@ export default defineNuxtConfig({
     },
     port: Number(process.env.PORT ?? "3000"), // default: 3000
     rootDirectory: process.cwd(),
+  },
+
+  schemaOrg: {
+    identity: "Person",
   },
 
   image: {
