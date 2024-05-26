@@ -52,7 +52,8 @@ useHead({
     <div
       class="flex md:hidden h-14 w-full items-center border-b dark:border-gray-600 border-gray-300 px-4 justify-between sticky top-0 dark:bg-gray-900 bg-gray-50 z-50"
     >
-      <div class="dark:bg-gray-100 bg-gray-900 rounded-full w-10 h-10"></div>
+      <img v-if="isDark" src="~/assets/image/logo-night.png" alt="logo" title="Logo Saya" />
+      <img v-else src="~/assets/image/logo-light.png" alt="logo" title="Logo Saya" />
       <div class="flex justify-center items-center gap-2">
         <UButton
           :icon="
@@ -83,9 +84,8 @@ useHead({
       >
         <div class="sticky top-4 flex flex-col gap-2">
           <div class="flex justify-between items-center">
-          <div
-            class="dark:bg-gray-100 bg-gray-900 rounded-full w-10 h-10"
-          ></div>
+            <img v-if="isDark" src="~/assets/image/logo-night.png" alt="logo" title="Logo Saya" />
+            <img v-else src="~/assets/image/logo-light.png" alt="logo" title="Logo Saya" />
 
           <UButton
             :icon="
