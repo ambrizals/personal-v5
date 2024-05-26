@@ -155,6 +155,16 @@ watch(status, (value) => {
       </div>
     </div>
     <div v-if="data" class="py-4 px-8">
+      <ClientOnly>
+        <Adsbygoogle
+          ad-slot="8622132142"
+          ad-format="auto"
+          data-full-width-responsive="true"
+          style="display: block;"
+          class="my-4"
+        />
+      </ClientOnly>        
+
       <DisqusComments :url="`https://ambrizal.net/blog/read/${data.slug}`" />
     </div>
   </div>

@@ -9,10 +9,17 @@ export default defineNuxtConfig({
     "@nuxt/image",
     "nuxt-disqus",
     "nuxt-schema-org",
+    "@nuxtjs/google-adsense",
   ],
 
   devServer: {
     port: 3000,
+  },
+
+  googleAdsense: {
+    id: "ca-pub-6932222478244321",
+    onPageLoad: false,
+    pageLevelAds: false,
   },
 
   components: {

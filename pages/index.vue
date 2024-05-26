@@ -69,30 +69,24 @@ useHead({
 
         <div class="h-2" />
 
-        <UCard v-for="item in 4" :key="item" class="mb-4">
-          <div class="flex gap-4">
-            <div class="flex-1">
-              <h3 class="text-lg font-semibold">Ea aliqua ut nostrud laboris ea voluptate eu mollit.</h3>
-              <p>Mollit anim reprehenderit cupidatat sint mollit incididunt duis commodo incididunt labore fugiat Lorem laboris qui.</p>
-            </div>
-            <div class="bg-gray-900 w-16 h-16"></div>
-          </div>
-        </UCard>
+        <div class="bg-gray-50 dark:bg-gray-800 border-gray-400 border rounded-md p-8 flex justify-center flex-col items-center">
+          <UIcon name="i-heroicons-information-circle" class="text-[4rem]" />
+          <div class="text-xl text-center">Untuk sementara list project belum tersedia, silakan mampir ke github saya terlebih dahulu karena masih dipersiapkan listnya.</div>
+        </div>
+        <div class="h-4" />
       </div>
       <div class="w-3/12 pr-4 flex flex-col gap-2">
         <CompTitle label="Quick Links" />
-        <UButton block color="gray" variant="outline" :trailing="false" icon="i-heroicons-link-solid">
+        <UButton block color="black" variant="outline" :trailing="false" icon="i-heroicons-link-solid" to="https://gist.github.com/ambrizals">
           My Github Snippet
         </UButton>
-        <UButton block color="gray" variant="outline" :trailing="false" icon="i-heroicons-document-check-16-solid
-
-">
+        <UButton block color="black" variant="outline" :trailing="false" icon="i-heroicons-document-check-16-solid">
           My Curriculum Vitae
         </UButton>
-        <UButton block color="gray" variant="outline" :trailing="false" icon="i-heroicons-link-solid">
+        <UButton block color="black" variant="outline" :trailing="false" icon="i-heroicons-link-solid" to="https://glints.com/id/profile/public/9031f1f5-ec3a-4902-a791-6ae38a7cd4f5">
           My Glints Account
         </UButton>
-        <UButton block color="gray" variant="outline" :trailing="false" icon="i-heroicons-envelope">
+        <UButton block color="black" variant="outline" :trailing="false" icon="i-heroicons-envelope" to="mailto:pc@ambrizal.net">
           Send Me An Email
         </UButton>
       </div>

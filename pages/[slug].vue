@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import '~/assets/css/blog.css'
+import 'medium-zoom/dist/style.css'
 
+import tocbot from 'tocbot'
+import mediumZoom from 'medium-zoom'
 
 const { $client } = useNuxtApp()
 const { public: runtimeConfig } = useRuntimeConfig()
 const { params, fullPath } = useRoute()
-const { data, pending, error } = await $client.page.entry.useQuery(params.slug.toString())
+const { data, error, status } = await $client.page.entry.useQuery(params.slug.toString())
+const isTocRendered = ref(false)
 
 useAsyncData(`page-${params.slug.toString()}`, async () => {
   if (error.value) {
@@ -32,6 +36,42 @@ useAsyncData(`page-${params.slug.toString()}`, async () => {
     ],
   })   
 })
+
+onMounted(() => {
+  setTimeout(() => {
+    tocbot.init({
+    tocSelector: '#toc-blog',
+    contentSelector: '#blog-content',
+    headingSelector: "h1, h2, h3",
+    hasInnerContainers: true
+  })
+  }, 100)
+})
+
+function renderToc() {
+  if (isTocRendered.value === false) {
+    setTimeout(() => {
+      tocbot.init({
+        tocSelector: '#toc-blog',
+        contentSelector: '#blog-content',
+        headingSelector: "h1, h2, h3",
+        hasInnerContainers: true
+      })
+    }, 100)  
+    isTocRendered.value = true    
+  }
+}
+
+onMounted(() => {
+  renderToc()
+  mediumZoom('[data-zoomable]')
+})
+
+watch(status, (value) => {
+  if (value === 'success') {
+    renderToc()
+  }
+})
 </script>
 
 <template>
@@ -41,10 +81,23 @@ useAsyncData(`page-${params.slug.toString()}`, async () => {
       <p v-if="data?.description && data?.description.length > 0">{{ data.description }}</p>
     </div>
     <div class="flex gap-4 justify-between py-4">
-      <div class="w-9/12 blog">
+      <div class="w-9/12 blog" id="page-content">
         <Markdown :source="data?.content" />
       </div>
-      <div class="w-3/12">Konten</div>
+      <div class="w-3/12">
+        <ClientOnly>
+          <Adsbygoogle
+            ad-slot="6710381184"
+            ad-format="auto"
+            data-full-width-responsive="true"
+            style="display: block;"
+          />
+        </ClientOnly>
+        <div class="h-4" />
+        <div class="py-4 px-8 md:px-0 sticky top-0">
+          <div id="toc-blog"></div>
+        </div>        
+      </div>
     </div>
   </div>
 </template>

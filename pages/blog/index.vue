@@ -72,9 +72,14 @@ useHead({
       </div>
     </div>
     <div class="md:w-3/12 py-4 mx-8 md:mx-0 md:mr-8">
-      <div class="bg-gray-300 h-64">
-        IKLAN DISINI
-      </div>
+      <ClientOnly>
+        <Adsbygoogle
+          ad-slot="6710381184"
+          ad-format="auto"
+          data-full-width-responsive="true"
+          style="display: block;"
+        />
+      </ClientOnly>
       <div class="h-2" />
       <div class="sticky top-1">
         <CompTitle label="Komentar Terakhir" />

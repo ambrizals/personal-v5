@@ -21,7 +21,7 @@ const { data, pending } = await $client.page.list.useQuery({})
   <div class="w-8/12 mx-auto min-h-svh">
     <div class="py-2 flex justify-between items-center">
       <div class="text-xl font-semibold">Pages</div>
-      <UButton>Tambah Halaman</UButton>
+      <UButton to="/dap/page/create">Tambah Halaman</UButton>
     </div>
 
     <div class="bg-white dark:bg-gray-800 my-4 border border-gray-200 dark:border-gray-600 rounded-md">
