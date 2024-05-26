@@ -38,6 +38,21 @@
   @apply bg-gray-100 border border-gray-400 dark:border-gray-600 rounded-md px-4 py-2 dark:bg-gray-800 my-2;
 }
 
+.blog hr {
+  text-align: center;
+}
+
+.blog hr:after {
+  content: '\2665';
+  display: inline-block;
+  position: relative;
+  top: -12px;
+  padding: 0 10px;
+  background: transparent;
+  color: white;
+  font-size: 18px;
+}
+
 .toc > .toc-list {
   overflow: hidden;
   position: relative;

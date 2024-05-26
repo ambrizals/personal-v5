@@ -41,6 +41,13 @@ const menus = [{
     router.push('/dap/blog')
   }
 }, {
+  label: 'Page',
+  icon: 'i-heroicons-document-solid',
+  onClick: () => {
+    router.push('/dap/page')
+  }
+},
+{
   label: 'Account',
   icon: 'i-heroicons-user',
   sub: [[{

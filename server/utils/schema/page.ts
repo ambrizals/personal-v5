@@ -14,6 +14,7 @@ export const Page = mysqlTable("pages", {
   slug: text("slug").notNull(),
   content: text("content").default("").notNull(),
   published: boolean("published").default(false).notNull(),
+  description: varchar("description", { length: 255 }).default("").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });

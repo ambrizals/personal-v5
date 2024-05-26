@@ -13,6 +13,10 @@ export default defineEventHandler(async (event) => {
       target = slug;
       break;
 
+    case "pages":
+      target = slug;
+      break;
+
     default:
       throw createError({
         statusCode: 422,
@@ -30,13 +34,19 @@ export default defineEventHandler(async (event) => {
       .refine((file) => !file || (!!file && file.type?.startsWith("image")), {
         message: "Only images is allowed",
       })
-      .transform((file) => ({
-        file,
-        name: `${uuidv4()}.${file.name.split(".")[1]}`,
-      }))
+      .transform((file) => {
+        const splitted = file.name.split(".");
+
+        return {
+          file,
+          name: `${uuidv4()}.${splitted[splitted.length - 1]}`,
+        };
+      })
   );
 
   const form = rules.safeParse(imgPayload);
+
+  console.log(form);
 
   if (form.success === false) {
     throw createError({

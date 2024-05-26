@@ -7,6 +7,7 @@ import {
 import { v4 as uuid } from "uuid";
 import { Page } from "~/server/utils/schema";
 import { sql } from "drizzle-orm";
+import { TRPCError } from "@trpc/server";
 
 export default router({
   list: authorizedProcedure
@@ -49,9 +50,6 @@ export default router({
     .input(z.string())
     .query(async ({ input, ctx }) => {
       const page = await db.query.Page.findFirst({
-        columns: {
-          id: false,
-        },
         where: (fields, { or, eq, and }) =>
           and(
             or(eq(fields.slug, input), eq(fields.uuid, input)),
@@ -59,7 +57,17 @@ export default router({
           ),
       });
 
-      return page;
+      if (page === undefined) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Page not found",
+        });
+      }
+
+      return {
+        ...page,
+        id: ctx.user ? page?.id : null,
+      };
     }),
   create: authorizedProcedure
     .input(
@@ -67,6 +75,7 @@ export default router({
         title: z.string(),
         content: z.string(),
         isPublished: z.boolean(),
+        description: z.string().optional(),
       })
     )
     .mutation(async ({ input }) => {
@@ -79,6 +88,7 @@ export default router({
           uuid: id,
           content: input.content,
           published: input.isPublished,
+          description: input.description,
         })
         .then(async (res) => {
           if (res[0].affectedRows > 0) {
@@ -100,6 +110,7 @@ export default router({
         title: z.string().optional(),
         content: z.string().optional(),
         isPublished: z.boolean().optional(),
+        description: z.string().optional(),
       })
     )
     .mutation(async ({ input }) => {
@@ -110,6 +121,7 @@ export default router({
           slug: input.title ? formatToSlug(input.title) : undefined,
           content: input.content,
           published: input.isPublished,
+          description: input.description,
         })
         .then(async (res) => {
           if (res[0].affectedRows > 0) {
