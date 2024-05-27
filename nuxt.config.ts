@@ -10,6 +10,7 @@ export default defineNuxtConfig({
     "nuxt-disqus",
     "nuxt-schema-org",
     "@nuxtjs/google-adsense",
+    "@nuxtjs/sitemap",
   ],
 
   devServer: {
@@ -44,6 +45,42 @@ export default defineNuxtConfig({
 
   disqus: {
     shortname: "ambrizalofficialsblog",
+  },
+
+  sitemap: {
+    excludeAppSources: true,
+    sitemaps: {
+      pages: {
+        urls: () => {
+          return [
+            {
+              loc: "/",
+              changefreq: "monthly",
+              priority: 1,
+            },
+            {
+              loc: "/blog",
+              changefreq: "weekly",
+              priority: 0.7,
+            },
+            {
+              loc: "/project",
+              changefreq: "monthly",
+              priority: 1,
+            },
+            {
+              loc: "/about",
+              changefreq: "monthly",
+              priority: 0.7,
+            },
+          ];
+        },
+      },
+      blog: {
+        sources: ["/api/__sitemap__/blog"],
+      },
+    },
+    cacheMaxAgeSeconds: 3600,
   },
 
   runtimeConfig: {
