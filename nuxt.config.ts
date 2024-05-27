@@ -11,6 +11,7 @@ export default defineNuxtConfig({
     "nuxt-schema-org",
     "@nuxtjs/google-adsense",
     "@nuxtjs/sitemap",
+    "nuxt-og-image"
   ],
 
   devServer: {

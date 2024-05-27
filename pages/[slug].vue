@@ -27,6 +27,14 @@ useAsyncData(`page-${params.slug.toString()}`, async () => {
     ogUrl: runtimeConfig.appUrl + fullPath,
   })
 
+  defineOgImageComponent('NuxtSeo', {
+    title: data.value?.title,
+    description: data.value?.description,
+    theme: '#808080',
+    siteName: 'Ambrizal Personal Site',
+    siteLogo: runtimeConfig.appUrl + '/_nuxt/assets/image/logo-light.png',
+  })      
+
   useHead({
     link: [
       {

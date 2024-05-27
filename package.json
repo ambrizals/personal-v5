@@ -20,6 +20,7 @@
     "drizzle-kit": "^0.20.17",
     "nuxt": "^3.11.2",
     "nuxt-disqus": "^1.0.1",
+    "nuxt-og-image": "^3.0.0-rc.53",
     "nuxt-schema-org": "^3.3.6"
   },
   "dependencies": {
