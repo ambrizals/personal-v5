@@ -4,14 +4,13 @@ import "./env/server";
 export default defineNuxtConfig({
   ssr: true,
   modules: [
-    "@nuxt/content",
     "@nuxt/ui",
     "@nuxt/image",
     "nuxt-disqus",
     "nuxt-schema-org",
     "@nuxtjs/google-adsense",
     "@nuxtjs/sitemap",
-    "nuxt-og-image"
+    "nuxt-og-image",
   ],
 
   devServer: {
