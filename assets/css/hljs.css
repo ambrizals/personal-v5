@@ -96,3 +96,7 @@
   background: #c0c0c0;
   opacity: 0.6;
 }
+
+.toc-anchor {
+  @apply inline-block;
+}
