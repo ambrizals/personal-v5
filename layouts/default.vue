@@ -48,6 +48,7 @@ useHead({
 </script>
 
 <template>
+  <div>
     <NuxtLoadingIndicator />
     <div
       class="flex md:hidden h-14 w-full items-center border-b dark:border-gray-600 border-gray-300 px-4 justify-between sticky top-0 dark:bg-gray-900 bg-gray-50 z-50"
@@ -176,7 +177,6 @@ useHead({
           :middleware="() => toggleMenuResponsive()"
         />
       </div>
-    </USlideover>    
-
-    <UNotifications />
+    </USlideover>     
+  </div>
 </template>

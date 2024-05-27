@@ -20,13 +20,13 @@ useSchemaOrg([
   })
 ])
 
-defineOgImageComponent('NuxtSeo', {
-  title: 'Hello',
-  description: 'Selamat datang di personal web ambrizal',
-  theme: '#808080',
-  siteName: 'Ambrizal Personal Site',
-  siteLogo: runtimeConfig.appUrl + '/_nuxt/assets/image/logo-light.png',
-})
+// defineOgImageComponent('NuxtSeo', {
+//   title: 'Hello',
+//   description: 'Selamat datang di personal web ambrizal',
+//   theme: '#808080',
+//   siteName: 'Ambrizal Personal Site',
+//   siteLogo: runtimeConfig.appUrl + '/_nuxt/assets/image/logo-light.png',
+// })
 
 
 useHead({
@@ -71,8 +71,8 @@ useHead({
     </div>
     <div class="h-4" />
     <UDivider class="h-4" />
-    <div class="flex">
-      <div class="w-9/12 px-4">
+    <div class="flex md:flex-row flex-col">
+      <div class="w-full md:w-9/12 px-4">
         <CompTitle label="My Project" to="/p/project" />
 
         <div class="h-2" />
@@ -83,7 +83,7 @@ useHead({
         </div>
         <div class="h-4" />
       </div>
-      <div class="w-3/12 pr-4 flex flex-col gap-2">
+      <div class="w-full md:w-3/12 px-4 md:pr-4 flex flex-col gap-2">
         <CompTitle label="Quick Links" />
         <UButton block color="black" variant="outline" :trailing="false" icon="i-heroicons-link-solid" to="https://gist.github.com/ambrizals">
           My Github Snippet

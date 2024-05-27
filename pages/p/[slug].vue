@@ -27,13 +27,13 @@ useAsyncData(`page-${params.slug.toString()}`, async () => {
     ogUrl: runtimeConfig.appUrl + fullPath,
   })
 
-  defineOgImageComponent('NuxtSeo', {
-    title: data.value?.title,
-    description: data.value?.description,
-    theme: '#808080',
-    siteName: 'Ambrizal Personal Site',
-    siteLogo: runtimeConfig.appUrl + '/_nuxt/assets/image/logo-light.png',
-  })      
+  // defineOgImageComponent('NuxtSeo', {
+  //   title: data.value?.title,
+  //   description: data.value?.description,
+  //   theme: '#808080',
+  //   siteName: 'Ambrizal Personal Site',
+  //   siteLogo: runtimeConfig.appUrl + '/_nuxt/assets/image/logo-light.png',
+  // })      
 
   useHead({
     link: [
@@ -88,11 +88,11 @@ watch(status, (value) => {
       <h1 class="text-3xl font-semibold">{{ data?.title }}</h1>
       <p v-if="data?.description && data?.description.length > 0">{{ data.description }}</p>
     </div>
-    <div class="flex gap-4 justify-between py-4">
-      <div class="w-9/12 blog" id="page-content">
+    <div class="flex md:flex-row flex-col gap-4 justify-between py-4">
+      <div class="md:order-1 order-2 w-full md:w-9/12 blog" id="page-content">
         <Markdown :source="data?.content" />
       </div>
-      <div class="w-3/12">
+      <div class="md:order-2 order-1 w-full md:w-3/12">
         <ClientOnly>
           <Adsbygoogle
             ad-slot="6710381184"
@@ -102,7 +102,7 @@ watch(status, (value) => {
           />
         </ClientOnly>
         <div class="h-4" />
-        <div class="py-4 px-8 md:px-0 sticky top-0">
+        <div class="md:py-4 md:px-8 px-0 sticky top-0">
           <div id="toc-blog"></div>
         </div>        
       </div>

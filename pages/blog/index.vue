@@ -41,13 +41,13 @@ useSeoMeta({
   ogUrl: runtimeConfig.appUrl + fullPath,
 })
 
-defineOgImageComponent('NuxtSeo', {
-  title: 'Blog',
-  description: 'Kumpulan artikel menarik yang ditulis',
-  theme: '#808080',
-  siteName: 'Ambrizal Personal Site',
-  siteLogo: runtimeConfig.appUrl + '/_nuxt/assets/image/logo-light.png',
-})
+// defineOgImageComponent('NuxtSeo', {
+//   title: 'Blog',
+//   description: 'Kumpulan artikel menarik yang ditulis',
+//   theme: '#808080',
+//   siteName: 'Ambrizal Personal Site',
+//   siteLogo: runtimeConfig.appUrl + '/_nuxt/assets/image/logo-light.png',
+// })
 
 useHead({
   link: [

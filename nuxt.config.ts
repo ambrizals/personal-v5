@@ -10,7 +10,6 @@ export default defineNuxtConfig({
     "nuxt-schema-org",
     "@nuxtjs/google-adsense",
     "@nuxtjs/sitemap",
-    "nuxt-og-image",
   ],
 
   devServer: {
@@ -90,6 +89,7 @@ export default defineNuxtConfig({
     },
     port: Number(process.env.PORT ?? "3000"), // default: 3000
     rootDirectory: process.cwd(),
+    serverUrl: process.env.NUXT_PUBLIC_SERVER_URL,
   },
 
   schemaOrg: {

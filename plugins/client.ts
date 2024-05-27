@@ -7,7 +7,8 @@ export default defineNuxtPlugin((nuxtApp) => {
   let url = "/api/trpc";
 
   if (import.meta.server) {
-    url = `http://localhost:${nuxtApp.$config.port}${url}`;
+    url = `http://${nuxtApp.$config.serverUrl}:${nuxtApp.$config.port}${url}`;
+    // console.log("server hits =>", url);
   }
 
   /**
