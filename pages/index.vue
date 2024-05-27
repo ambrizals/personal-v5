@@ -73,7 +73,7 @@ useHead({
     <UDivider class="h-4" />
     <div class="flex">
       <div class="w-9/12 px-4">
-        <CompTitle label="My Project" to="/project" />
+        <CompTitle label="My Project" to="/p/project" />
 
         <div class="h-2" />
 

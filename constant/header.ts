@@ -35,11 +35,11 @@ export const HEADER_WEB_MENUS = [
   {
     name: "Project",
     icon: "i-heroicons-cog-8-tooth",
-    to: "/project",
+    to: "/p/project",
   },
   {
     name: "About",
     icon: "i-heroicons-user-circle",
-    to: "/about",
+    to: "/p/about",
   },
 ];

@@ -65,12 +65,12 @@ export default defineNuxtConfig({
               priority: 0.7,
             },
             {
-              loc: "/project",
+              loc: "/p/project",
               changefreq: "monthly",
               priority: 1,
             },
             {
-              loc: "/about",
+              loc: "/p/about",
               changefreq: "monthly",
               priority: 0.7,
             },

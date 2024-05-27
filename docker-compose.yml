@@ -3,7 +3,7 @@ services:
     container_name: app
     image: frontend:5.0
     ports:
-      - 3000:3000
+      - 80:3000
     environment:
       - APP_KEY='2bDRf9OLyUV8nWNE2MdDSIlrMkCLBobK'
       - DATABASE_USER=Sabun-Mac
