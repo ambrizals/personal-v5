@@ -5,7 +5,7 @@ import {
   preAuthorizedProcedure,
 } from "../procedure/authorized";
 import { v4 as uuid } from "uuid";
-import { sql } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
 
 export default router({
@@ -122,6 +122,7 @@ export default router({
           published: input.isPublished,
           description: input.description,
         })
+        .where(eq(Page.id, input.id))
         .then(async (res) => {
           if (res[0].affectedRows > 0) {
             const result = await db.query.Page.findFirst({
