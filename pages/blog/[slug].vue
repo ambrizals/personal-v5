@@ -137,7 +137,7 @@ watch(status, (value) => {
     <div class="flex md:flex-row flex-col gap-2">
       <div class="w-full md:w-9/12 md:order-1 order-2">
         <div v-if="status === 'success'" class="py-4 px-8 blog" itemprop="articleBody">
-          <Markdown :ref="markdownRef" :source="data!.content!" class="text-justify" />
+          <Markdown :ref="markdownRef" :source="data!.content!" class="text-justify" id="blog-content" />
         </div>
       </div>
       <div class="flex-1 md:order-2 order-1 pr-2">

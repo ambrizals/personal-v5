@@ -95,3 +95,11 @@
   @apply text-gray-800 dark:text-white;
   font-weight: 700;
 }
+
+.md-editor-preview-wrapper {
+  @apply !p-0 !break-normal; 
+}
+
+.md-editor-preview {
+  @apply !p-0 !break-normal; 
+}

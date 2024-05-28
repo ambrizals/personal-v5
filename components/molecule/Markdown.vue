@@ -1,27 +1,7 @@
 <script setup lang="ts">
-import '~/assets/css/hljs.css'
-
-import MarkdownIt from "markdown-it";
+import 'highlight.js/styles/github.min.css'
+import { MdPreview, config } from 'md-editor-v3';
 import MarkdownItAnchor from "markdown-it-anchor";
-import MarkdownItHighlightjs from "markdown-it-highlightjs";
-import MarkdownItNamedCodeBlock from 'markdown-it-named-code-blocks'
-import MarkdownItVideo from 'markdown-it-video'
-
-const markdown = new MarkdownIt()
-  .use(MarkdownItAnchor, {
-    permalink: MarkdownItAnchor.permalink.linkInsideHeader({
-      symbol: `
-        <svg data-v-4fa0a2a1="" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="icon text-lg" width="1em" height="1em" viewBox="0 0 16 16"><g fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"><path d="M8.914 6.025a.75.75 0 0 1 1.06 0a3.5 3.5 0 0 1 0 4.95l-2 2a3.5 3.5 0 0 1-5.396-4.402a.75.75 0 0 1 1.251.827a2 2 0 0 0 3.085 2.514l2-2a2 2 0 0 0 0-2.828a.75.75 0 0 1 0-1.06"></path><path d="M7.086 9.975a.75.75 0 0 1-1.06 0a3.5 3.5 0 0 1 0-4.95l2-2a3.5 3.5 0 0 1 5.396 4.402a.75.75 0 0 1-1.251-.827a2 2 0 0 0-3.085-2.514l-2 2a2 2 0 0 0 0 2.828a.75.75 0 0 1 0 1.06"></path></g></svg>
-      `,
-      placement: 'before',
-      class: 'toc-anchor'
-    })
-  })
-  .use(MarkdownItHighlightjs)
-  .use(MarkdownItNamedCodeBlock)
-  .use(MarkdownItVideo, {
-    youtube: { width: '100%', height: 390 },
-  })
 
 defineProps({
   source: {
@@ -30,20 +10,31 @@ defineProps({
   }
 });
 
-const defaultRender = markdown.renderer.rules.image || function(tokens, idx, options, env, self) {
-  return self.renderToken(tokens, idx, options);
-};
+config({
+  markdownItConfig: (md) => {
+    const defaultRender = md.renderer.rules.image || function(tokens, idx, options, env, self) {
+      return self.renderToken(tokens, idx, options);
+    };
 
-function renderMd(src: string, env?: any) {
-  markdown.renderer.rules.image = function(tokens, idx, options, env, self) {
-    const token = tokens[idx];
-    token.attrPush(['data-zoomable', '']);
-    return defaultRender(tokens, idx, options, env, self);
-  };
-  return markdown.render(src, env)
-}
+
+    md.use(MarkdownItAnchor)
+    md.renderer.rules.image = function(tokens, idx, options, env, self) {
+      const token = tokens[idx];
+      token.attrPush(['data-zoomable', '']);
+      return defaultRender(tokens, idx, options, env, self);
+    };    
+  }
+})
 </script>
 
 <template>
-  <div v-html="renderMd(source)" id="blog-content" />
+  <MdPreview :model-value="source" preview-theme="github" code-theme="github" language="en-US"  />
 </template>
+
+<style>
+  /* .md-editor-preview-wrapper {
+    padding: 0 !important;
+    text-align: left;
+    word-break: keep-all !important;
+  } */
+</style>

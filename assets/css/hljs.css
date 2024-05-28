@@ -100,3 +100,22 @@
 .toc-anchor {
   @apply inline-block;
 }
+
+.code-block {
+  position: relative;
+}
+
+.copy-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: #0075ff;
+  color: white;
+  border: none;
+  padding: 0.5em;
+  cursor: pointer;
+}
+
+.copy-btn:hover {
+  background: #005fcc;
+}

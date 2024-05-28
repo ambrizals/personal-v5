@@ -61,7 +61,7 @@ function renderToc() {
     setTimeout(() => {
       tocbot.init({
         tocSelector: '#toc-blog',
-        contentSelector: '#blog-content',
+        contentSelector: '#page-content',
         headingSelector: "h1, h2, h3",
         hasInnerContainers: true
       })
