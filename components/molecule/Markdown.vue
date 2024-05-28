@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import 'highlight.js/styles/github.min.css'
+import 'md-editor-v3/lib/preview.css';
 import { MdPreview, config } from 'md-editor-v3';
 import MarkdownItAnchor from "markdown-it-anchor";
 
