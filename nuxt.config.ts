@@ -22,6 +22,11 @@ export default defineNuxtConfig({
     componentOptions: {
       global: true,
     },
+    compatibility: {
+      prerender: {
+        chromium: false,
+      },
+    },
   },
 
   googleAdsense: {
