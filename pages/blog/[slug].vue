@@ -49,11 +49,17 @@ useAsyncData(`set-head-${params.slug.toString()}`, async () => {
       ogDescription: data.value.description,
       ogType: 'article',
       ogUrl: runtimeConfig.appUrl + fullPath,
-      ogImage: runtimeConfig.assetUrl + '/cover/' + data.value.cover,
-      ogImageType: 'image/jpeg',
       articlePublishedTime: data.value.createdAt,
       articleAuthor: ["https://www.facebook.com/ambrizalsuryadinatasb"],
       publisher: "https://www.facebook.com/ambrizalsuryadinata",
+    })
+
+    defineOgImageComponent('OgDefault', {
+      title: data.value.title,
+      description: data.value.description,
+      subPage: 'Blog',
+      siteLogo: 'https://cbs.ambrizal.net/assets/Logo_Apps_White.png',
+      image: data.value.thumbnail ? runtimeConfig.assetUrl + '/thumbnails/' + data.value.cover : undefined
     })
 
     useHead({
@@ -66,12 +72,6 @@ useAsyncData(`set-head-${params.slug.toString()}`, async () => {
     })    
   }  
 })
-
-// const { data, status } = useAsyncData(async () => {
-//   const blog = await $client.blog.read.query(params.slug.toString())
-
-//   return blog
-// })
 
 onMounted(() => {
   setTimeout(() => {

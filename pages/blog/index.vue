@@ -41,13 +41,11 @@ useSeoMeta({
   ogUrl: runtimeConfig.appUrl + fullPath,
 })
 
-// defineOgImageComponent('NuxtSeo', {
-//   title: 'Blog',
-//   description: 'Kumpulan artikel menarik yang ditulis',
-//   theme: '#808080',
-//   siteName: 'Ambrizal Personal Site',
-//   siteLogo: runtimeConfig.appUrl + '/_nuxt/assets/image/logo-light.png',
-// })
+defineOgImageComponent('OgDefault', {
+  title: 'Blog',
+  description: 'Kumpulan - kumpulan artikel yang telah ditulis untuk membahas minat dan kesukaan penulis',
+  siteLogo: 'https://cbs.ambrizal.net/assets/Logo_Apps_White.png',
+})
 
 useHead({
   link: [

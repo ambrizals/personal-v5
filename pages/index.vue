@@ -20,13 +20,11 @@ useSchemaOrg([
   })
 ])
 
-// defineOgImageComponent('NuxtSeo', {
-//   title: 'Hello',
-//   description: 'Selamat datang di personal web ambrizal',
-//   theme: '#808080',
-//   siteName: 'Ambrizal Personal Site',
-//   siteLogo: runtimeConfig.appUrl + '/_nuxt/assets/image/logo-light.png',
-// })
+defineOgImageComponent('OgDefault', {
+  title: 'Hello',
+  description: 'Selamat datang di personal web ambrizal',
+  siteLogo: 'https://cbs.ambrizal.net/assets/Logo_Apps_White.png',
+})
 
 
 useHead({
