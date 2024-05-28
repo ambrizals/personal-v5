@@ -126,7 +126,7 @@ watch(status, (value) => {
 
 <template>
   <div itemscope itemtype="https://schema.org/Article">
-    <div class="w-full bg-gray-600 h-56 md:h-72 overflow-hidden">
+    <div v-if="data?.cover" class="w-full bg-gray-600 h-56 md:h-72 overflow-hidden">
       <NuxtImg itemprop="image" class="object-cover object-center w-full h-auto md:h-[388px]" :src="`/cover/${data?.cover}`" />
     </div>
     <div class="py-4 px-8 border-b">
