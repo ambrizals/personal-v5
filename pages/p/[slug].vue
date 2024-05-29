@@ -19,6 +19,10 @@ useAsyncData(`page-${params.slug.toString()}`, async () => {
     })
   }
 
+  useTrackEvent('page_view', {
+    content_id: `page-${data.value?.slug}`,
+  })
+
   useSeoMeta({
     title: data.value?.title,
     description: data.value?.description,

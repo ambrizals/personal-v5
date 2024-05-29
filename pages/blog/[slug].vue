@@ -64,6 +64,10 @@ useAsyncData(`set-head-${params.slug.toString()}`, async () => {
       image: data.value.thumbnail ? runtimeConfig.assetUrl + '/thumbnails/' + data.value.cover : undefined
     })
 
+    useTrackEvent('page_view', {
+      content_id: `blog-${data.value.slug}`,
+    })
+
     useHead({
       link: [
         {
@@ -99,7 +103,6 @@ function renderToc() {
     isTocRendered.value = true    
   }
 }
-
 onMounted(() => {
   renderToc()
   mediumZoom('[data-zoomable]')

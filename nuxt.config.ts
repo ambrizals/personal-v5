@@ -11,6 +11,7 @@ export default defineNuxtConfig({
     "@nuxtjs/google-adsense",
     "@nuxtjs/sitemap",
     "nuxt-og-image",
+    "nuxt-gtag",
   ],
 
   devServer: {
@@ -18,6 +19,10 @@ export default defineNuxtConfig({
   },
 
   css: ["~/assets/css/reset-markdown.css", "~/assets/css/reset-disqus.css"],
+
+  gtag: {
+    id: "G-DTD922V4TP",
+  },
 
   colorMode: {
     dataValue: "theme",
