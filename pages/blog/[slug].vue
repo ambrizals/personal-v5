@@ -10,12 +10,14 @@ import mediumZoom from 'medium-zoom'
 const { params, fullPath } = useRoute()
 const { $client } = useNuxtApp()
 const { public: runtimeConfig } = useRuntimeConfig()
+const colorMode = useColorMode()
 const toast = useToast()
 
 const disqusRef = ref<any>()
 
 const markdownRef = ref<any>()
 const isTocRendered = ref(false)
+const disqusRerender = ref(false)
 
 const { data, error, status } = await $client.blog.read.useQuery(params.slug.toString())
 
@@ -108,6 +110,18 @@ onMounted(() => {
   mediumZoom('[data-zoomable]')
 })
 
+watch(colorMode, () => {
+  disqusRerender.value = true
+})
+
+watch(disqusRerender, (value) => {
+  if (value === true) {
+    setTimeout(() => {
+      disqusRerender.value = false
+    }, 3)
+  }
+})
+
 function copyCurrentUrlToClipboard(): void {
   const tempInput = document.createElement('input'); // Create a temporary input element
   tempInput.value = runtimeConfig.appUrl + fullPath; // Set the value of the input to the current URL
@@ -171,10 +185,10 @@ watch(status, (value) => {
       </ClientOnly>        
 
       <LazyColorScheme>
-        <ClientOnly>
+        <ClientOnly v-if="disqusRerender === false">
           <DisqusComments ref="disqusRef" :url="`https://ambrizal.net/blog/read/${data.slug}`" />
         </ClientOnly>        
-      </LazyColorScheme>
+      </LazyColorScheme>        
     </div>
   </div>
 </template>

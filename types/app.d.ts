@@ -1,2 +1,2 @@
 declare module "markdown-it-video";
-declare module "vue-disqus";
+declare module "vue3-disqus";

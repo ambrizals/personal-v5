@@ -10,3 +10,4 @@ dist
 storage
 docker_storage
 yarn.lock
+package-lock.json

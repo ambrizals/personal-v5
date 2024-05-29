@@ -4,7 +4,7 @@ import 'md-editor-v3/lib/preview.css';
 import { MdPreview, config } from 'md-editor-v3';
 import MarkdownItAnchor from "markdown-it-anchor";
 
-const { value: colorMode } = useColorMode();
+const colorMode = useColorMode();
 
 defineProps({
   source: {
@@ -32,7 +32,7 @@ config({
 
 <template>
   <LazyColorScheme>
-    <MdPreview :model-value="source" preview-theme="github" code-theme="github" language="en-US" :theme="colorMode === 'dark' ? 'dark' : 'light'"  />
+  <MdPreview :model-value="source" preview-theme="github" code-theme="github" language="en-US" :theme="colorMode.value === 'dark' ? 'dark' : 'light'"  />
   </LazyColorScheme>
 </template>
 

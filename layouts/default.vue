@@ -126,7 +126,7 @@ useHead({
         />
         </div>
       </div>
-      <div class="w-full md:w-9/12 lg:w-10/12">
+      <div class="w-full md:w-9/12 lg:w-10/12 bg-white dark:bg-black dark:text-gray-50 text-gray-800">
         <slot />
       </div>
     </div>
