@@ -17,6 +17,7 @@ export default defineEventHandler(async (event) => {
         const fileStream = createReadStream(resolvedFilePath);
         return sendStream(event, fileStream);
       } else {
+        console.log("not found", storagePath);
         throw createError({
           statusCode: 404,
           message: "Not found",

@@ -1,0 +1,17 @@
+#content .md-editor-preview-wrapper {
+  @apply !p-0 !break-normal; 
+}
+
+#content .md-editor-preview {
+  word-break: break-word !important;
+  @apply !p-0 !text-gray-900 !text-left; 
+}
+
+.dark #content .md-editor-preview {
+  @apply !text-white;
+}
+
+#content .md-editor {
+  @apply !bg-transparent;
+}
+

@@ -1,25 +1,36 @@
-ARG NODE_IMAGE=oven/bun:1.1.10-alpine
+# Stage 1: Build the project
+FROM --platform=linux/amd64 node:lts-alpine AS builder
 
-FROM --platform=linux/amd64 $NODE_IMAGE AS base
-WORKDIR /usr/src/app
-RUN apk --no-cache add openssh g++ make python3 git
+# Set the working directory
+WORKDIR /app
 
-FROM base AS install
-RUN mkdir -p /temp
-COPY package.json bun.lockb /temp/
-RUN cd /temp && bun install
+# Copy package.json and package-lock.json (or yarn.lock) to the working directory
+COPY package*.json ./
 
-FROM install AS prerelease
-COPY --from=install /temp/node_modules node_modules
+# Install dependencies
+RUN npm install
+
+# Copy the rest of the application code to the working directory
 COPY . .
 
-ENV NODE_ENV=production
-RUN bun run build
+# Build the Nuxt.js project
+RUN npm run build
 
-FROM base AS release
-COPY --chown=bun:bun --from=install /temp/node_modules node_modules
-COPY --chown=bun:bun --from=prerelease /usr/src/app/.output .
+# Stage 2: Create the production image
+FROM --platform=linux/amd64 node:lts-alpine
 
-ENV HOST 0.0.0.0
+# Set the working directory
+WORKDIR /app
+
+# Copy only the build output and package.json/package-lock.json to the production image
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/.output ./.output
+
+# Install only production dependencies
+RUN npm install --only=production
+
+# Expose the port that the application will run on
 EXPOSE 3000
-ENTRYPOINT [ "bun", "run", "server/index.mjs" ]
+
+# Specify the command to run the application
+CMD ["node", ".output/server/index.mjs"]

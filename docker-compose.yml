@@ -1,9 +1,9 @@
 services:
   app:
     container_name: app
-    image: frontend:5.0
+    image: 339456262403.dkr.ecr.ap-southeast-1.amazonaws.com/mayapp:frontend-5.2
     ports:
-      - 80:3000
+      - 3000:3000
     environment:
       - APP_KEY='2bDRf9OLyUV8nWNE2MdDSIlrMkCLBobK'
       - DATABASE_USER=Sabun-Mac
@@ -15,7 +15,7 @@ services:
       - NUXT_PUBLIC_APP_URL=http://0.0.0.0:3000
       - NUXT_PUBLIC_ASSET_URL=http://0.0.0.0:3000/ias
     volumes:
-      - ./storage:/usr/src/app/storage
+      - ./storage:/app/storage
   # mariadb:
   #   image: mariadb:latest
   #   container_name: mariadb

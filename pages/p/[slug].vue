@@ -46,7 +46,7 @@ onMounted(() => {
   setTimeout(() => {
     tocbot.init({
     tocSelector: '#toc-blog',
-    contentSelector: '#blog-content',
+    contentSelector: '#content',
     headingSelector: "h1, h2, h3",
     hasInnerContainers: true
   })
@@ -58,7 +58,7 @@ function renderToc() {
     setTimeout(() => {
       tocbot.init({
         tocSelector: '#toc-blog',
-        contentSelector: '#page-content',
+        contentSelector: '#content',
         headingSelector: "h1, h2, h3",
         hasInnerContainers: true
       })
@@ -86,8 +86,10 @@ watch(status, (value) => {
       <p v-if="data?.description && data?.description.length > 0">{{ data.description }}</p>
     </div>
     <div class="flex md:flex-row flex-col gap-4 justify-between py-4">
-      <div class="md:order-1 order-2 w-full md:w-9/12 blog" id="page-content">
-        <Markdown :source="data?.content" />
+      <div class="md:order-1 order-2 w-full md:w-9/12 blog" id="content">
+        <LazyColorScheme>
+          <Markdown :source="data?.content" />
+        </LazyColorScheme>
       </div>
       <div class="md:order-2 order-1 w-full md:w-3/12">
         <ClientOnly>

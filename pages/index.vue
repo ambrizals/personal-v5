@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import { MY_RESUME_LINK } from '~/constant/header'
 const { $client } = useNuxtApp()
 
 const { public: runtimeConfig } = useRuntimeConfig()
 const { data: blogs } = await $client.blog.article.useQuery({ page: 1, perPage: 2 })
+const isResumeOpen = ref(false)
 
 useSeoMeta({
   title: 'Beranda',
@@ -35,6 +37,10 @@ useHead({
     },
   ],
 })
+
+function toggleResume() {
+  isResumeOpen.value = !isResumeOpen.value
+}
 </script>
 
 <template>
@@ -86,7 +92,7 @@ useHead({
         <UButton block color="black" variant="outline" :trailing="false" icon="i-heroicons-link-solid" to="https://gist.github.com/ambrizals">
           My Github Snippet
         </UButton>
-        <UButton block color="black" variant="outline" :trailing="false" icon="i-heroicons-document-check-16-solid">
+        <UButton block color="black" variant="outline" :trailing="false" icon="i-heroicons-document-check-16-solid" :to="MY_RESUME_LINK" target="_blank">
           My Curriculum Vitae
         </UButton>
         <UButton block color="black" variant="outline" :trailing="false" icon="i-heroicons-link-solid" to="https://glints.com/id/profile/public/9031f1f5-ec3a-4902-a791-6ae38a7cd4f5">
@@ -98,4 +104,5 @@ useHead({
       </div>
     </div>
   </div>
+
 </template>

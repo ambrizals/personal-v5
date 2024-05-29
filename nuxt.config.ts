@@ -17,6 +17,13 @@ export default defineNuxtConfig({
     port: 3000,
   },
 
+  css: ["~/assets/css/reset-markdown.css", "~/assets/css/reset-disqus.css"],
+
+  colorMode: {
+    dataValue: "theme",
+    fallback: "dark",
+  },
+
   ogImage: {
     componentDirs: ["OgImage", "OgImageTemplate"],
     componentOptions: {

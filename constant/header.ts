@@ -43,3 +43,6 @@ export const HEADER_WEB_MENUS = [
     to: "/p/about",
   },
 ];
+
+export const MY_RESUME_LINK =
+  "https://drive.google.com/file/d/1Hb9wQwO_XIICe4PRN7hP_cHayaDrHq-U/view";

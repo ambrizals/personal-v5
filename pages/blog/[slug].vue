@@ -12,6 +12,8 @@ const { $client } = useNuxtApp()
 const { public: runtimeConfig } = useRuntimeConfig()
 const toast = useToast()
 
+const disqusRef = ref<any>()
+
 const markdownRef = ref<any>()
 const isTocRendered = ref(false)
 
@@ -77,7 +79,7 @@ onMounted(() => {
   setTimeout(() => {
     tocbot.init({
     tocSelector: '#toc-blog',
-    contentSelector: '#blog-content',
+    contentSelector: '#content',
     headingSelector: "h1, h2, h3",
     hasInnerContainers: true
   })
@@ -89,7 +91,7 @@ function renderToc() {
     setTimeout(() => {
       tocbot.init({
         tocSelector: '#toc-blog',
-        contentSelector: '#blog-content',
+        contentSelector: '#content',
         headingSelector: "h1, h2, h3",
         hasInnerContainers: true
       })
@@ -136,8 +138,8 @@ watch(status, (value) => {
     </div>
     <div class="flex md:flex-row flex-col gap-2">
       <div class="w-full md:w-9/12 md:order-1 order-2">
-        <div v-if="status === 'success'" class="py-4 px-8 blog" itemprop="articleBody">
-          <Markdown :ref="markdownRef" :source="data!.content!" class="text-justify" id="blog-content" />
+        <div v-if="status === 'success'" class="py-4 px-8 blog" itemprop="articleBody" id="content">
+          <Markdown :ref="markdownRef" :source="data!.content!" class="text-justify" />
         </div>
       </div>
       <div class="flex-1 md:order-2 order-1 pr-2">
@@ -165,7 +167,11 @@ watch(status, (value) => {
         />
       </ClientOnly>        
 
-      <DisqusComments :url="`https://ambrizal.net/blog/read/${data.slug}`" />
+      <LazyColorScheme>
+        <ClientOnly>
+          <DisqusComments ref="disqusRef" :url="`https://ambrizal.net/blog/read/${data.slug}`" />
+        </ClientOnly>        
+      </LazyColorScheme>
     </div>
   </div>
 </template>
