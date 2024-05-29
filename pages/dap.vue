@@ -41,6 +41,13 @@ const menus = [{
     router.push('/dap/blog')
   }
 }, {
+  label: 'Page',
+  icon: 'i-heroicons-document-solid',
+  onClick: () => {
+    router.push('/dap/page')
+  }
+},
+{
   label: 'Account',
   icon: 'i-heroicons-user',
   sub: [[{
@@ -55,6 +62,10 @@ const menus = [{
     }
   }]]
 }]
+
+useHead({
+  titleTemplate: () => 'Admin Dashboard'
+})
 </script>
 
 <template>
@@ -76,10 +87,11 @@ const menus = [{
       </UTooltip>
     </div>
     <div class="w-[48px]" />
-    <div class="flex-1 px-4 py-2 bg-gray-100 dark:bg-gray-800">
+    <div class="flex-1 bg-gray-50 dark:bg-gray-800">
       <NuxtPage />
     </div>
   </div>
+  <UNotifications />
   <UModal v-model="logoutConfirm">
       <UCard :ui="{ ring: '', divide: 'divide-y divide-gray-100 dark:divide-gray-800' }">
         <template #header>
@@ -95,5 +107,5 @@ const menus = [{
           </div>
         </template>
       </UCard>
-    </UModal>
+  </UModal>
 </template>

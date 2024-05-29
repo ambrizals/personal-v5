@@ -1,0 +1,1 @@
+ALTER TABLE `articles` ADD `published` boolean DEFAULT false NOT NULL;

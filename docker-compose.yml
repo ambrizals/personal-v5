@@ -1,0 +1,36 @@
+services:
+  app:
+    container_name: app
+    image: 339456262403.dkr.ecr.ap-southeast-1.amazonaws.com/mayapp:frontend-5.2
+    ports:
+      - 3000:3000
+    environment:
+      - APP_KEY='2bDRf9OLyUV8nWNE2MdDSIlrMkCLBobK'
+      - DATABASE_USER=Sabun-Mac
+      - DATABASE_NAME=my-site
+      - DATABASE_PASSWORD=
+      - DATABASE_HOST=host.docker.internal
+      - DATABASE_DIALECT=mariadb
+      - NUXT_IMAGE_DOMAINS=0.0.0.0:3000
+      - NUXT_PUBLIC_APP_URL=http://0.0.0.0:3000
+      - NUXT_PUBLIC_ASSET_URL=http://0.0.0.0:3000/ias
+    volumes:
+      - ./storage:/app/storage
+  # mariadb:
+  #   image: mariadb:latest
+  #   container_name: mariadb
+  #   restart: always
+  #   environment:
+  #     - MARIADB_ROOT_PASSWORD=example_root_password
+  #     - MARIADB_DATABASE=example_db
+  #     - MARIADB_USER=example_user
+  #     - MARIADB_PASSWORD=example_password
+  #   ports:
+  #     - 3306:3306
+  #   volumes:
+  #     - ./docker_storage/mysql:/var/lib/mysql
+  #   networks:
+  #     - test_local
+
+networks:
+  test_local: 

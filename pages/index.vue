@@ -1,48 +1,71 @@
+<script setup lang="ts">
+import { MY_RESUME_LINK } from '~/constant/header'
+const { $client } = useNuxtApp()
+
+const { public: runtimeConfig } = useRuntimeConfig()
+const { data: blogs } = await $client.blog.article.useQuery({ page: 1, perPage: 2 })
+const isResumeOpen = ref(false)
+
+useSeoMeta({
+  title: 'Beranda',
+  description:
+  "Situs ini adalah situs pribadi milik Ambrizal Suryadinata yang memuat konten mengenai teknologi ataupun pengalaman menarik.",
+  ogDescription:
+  "Situs ini adalah situs pribadi milik Ambrizal Suryadinata yang memuat konten mengenai teknologi ataupun pengalaman menarik.",
+  ogUrl: runtimeConfig.appUrl,
+})
+
+useSchemaOrg([
+  defineWebPage({
+    name: 'Beranda',
+    abstract: 'Halaman beranda personal web ambrizal'
+  })
+])
+
+defineOgImageComponent('OgDefault', {
+  title: 'Hello',
+  description: 'Selamat datang di personal web ambrizal',
+  siteLogo: 'https://cbs.ambrizal.net/assets/Logo_Apps_White.png',
+})
+
+
+useHead({
+  link: [
+    {
+      rel: "canonical",
+      href: runtimeConfig.appUrl,
+    },
+  ],
+})
+
+function toggleResume() {
+  isResumeOpen.value = !isResumeOpen.value
+}
+</script>
 
 <template>
   <div>
-    <div class="h-72 w-full bg-gray-900 relative">
-      <div class="absolute bottom-0 px-4 py-8 w-full md:w-6/12 text-white">
+    <div class="h-52 md:h-72 w-full bg-gray-900 relative overflow-hidden">
+      <img src="~/assets/image/home.jpg" class="object-cover object-center w-full h-full" />
+      <div class="absolute bottom-0 px-4 py-8 w-full text-white text-center">
         <h1 class="text-4xl">Ambrizal Suryadinata</h1>
         <p>
-          Saya adalah seorang fullstack developer yang pernah menangani Web
-          Development, disini anda dapat melihat beberapa artikel yang membahas
-          mengenai teknologi yang saya gunakan dan cerita pengalaman.
+          Software Engineer
         </p>
       </div>
     </div>
     <div class="h-4" />
     <div class="px-4">
+      <!-- <div v-if="pending">
+        Loading...
+      </div> -->
       <div class="flex flex-col md:flex-row justify-between gap-4">
-        <UCard
-          v-for="number in 2"
-          :key="number"
-          class="flex-1"
+        <BlogCard
+          v-for="blog in blogs?.article"
+          :key="blog.id"
+          :blog="blog"
         >
-          <div class="flex flex-col md:flex-row gap-4">
-            <div class="flex items-center md:items-start gap-4">
-            <div class="bg-gray-700 w-16 h-16 md:w-32 md:h-32"></div>
-            <div class="block md:hidden">
-              <div class="text-xs">Category / 12-12-2012</div>
-              <h2 class="text-xl font-bold">Ex ipsum ex cupidatat dolor.</h2>
-            </div>
-          </div>
-          <div class="flex flex-col flex-1">
-            <div class="text-sm hidden md:block">Category / 12-12-2012</div>
-            <h2 class="text-2xl hidden md:block font-bold">
-              Ex ipsum ex cupidatat dolor.
-            </h2>
-            <p class="text-justify">
-              Duis nisi in exercitation Lorem sunt ullamco aliqua mollit laboris
-              incididunt dolore qui id ad. Tempor consectetur labore voluptate
-              adipisicing deserunt aute eiusmod proident consequat veniam anim.
-              Duis eiusmod magna eiusmod do do sunt in minim pariatur enim et
-              exercitation.
-            </p>
-          </div>
-          </div>
-
-        </UCard>
+        </BlogCard>
       </div>
       <div class="flex justify-center pt-4">
         <UButton to="/blog" variant="outline" color="gray" trailing icon="i-heroicons-arrow-right">
@@ -52,39 +75,34 @@
     </div>
     <div class="h-4" />
     <UDivider class="h-4" />
-    <div class="flex">
-      <div class="w-9/12 px-4">
-        <CompTitle label="My Project" to="/project" />
+    <div class="flex md:flex-row flex-col">
+      <div class="w-full md:w-9/12 px-4">
+        <CompTitle label="My Project" to="/p/project" />
 
         <div class="h-2" />
 
-        <UCard v-for="item in 4" :key="item" class="mb-4">
-          <div class="flex gap-4">
-            <div class="flex-1">
-              <h3 class="text-lg font-semibold">Ea aliqua ut nostrud laboris ea voluptate eu mollit.</h3>
-              <p>Mollit anim reprehenderit cupidatat sint mollit incididunt duis commodo incididunt labore fugiat Lorem laboris qui.</p>
-            </div>
-            <div class="bg-gray-900 w-16 h-16"></div>
-          </div>
-        </UCard>
+        <div class="bg-gray-50 dark:bg-gray-800 border-gray-400 border rounded-md p-8 flex justify-center flex-col items-center">
+          <UIcon name="i-heroicons-information-circle" class="text-[4rem]" />
+          <div class="text-xl text-center">Untuk sementara list project belum tersedia, silakan mampir ke github saya terlebih dahulu karena masih dipersiapkan listnya.</div>
+        </div>
+        <div class="h-4" />
       </div>
-      <div class="w-3/12 pr-4 flex flex-col gap-2">
+      <div class="w-full md:w-3/12 px-4 md:pr-4 flex flex-col gap-2">
         <CompTitle label="Quick Links" />
-        <UButton block color="gray" variant="outline" :trailing="false" icon="i-heroicons-link-solid">
+        <UButton block color="black" variant="outline" :trailing="false" icon="i-heroicons-link-solid" to="https://gist.github.com/ambrizals">
           My Github Snippet
         </UButton>
-        <UButton block color="gray" variant="outline" :trailing="false" icon="i-heroicons-document-check-16-solid
-
-">
+        <UButton block color="black" variant="outline" :trailing="false" icon="i-heroicons-document-check-16-solid" :to="MY_RESUME_LINK" target="_blank">
           My Curriculum Vitae
         </UButton>
-        <UButton block color="gray" variant="outline" :trailing="false" icon="i-heroicons-link-solid">
+        <UButton block color="black" variant="outline" :trailing="false" icon="i-heroicons-link-solid" to="https://glints.com/id/profile/public/9031f1f5-ec3a-4902-a791-6ae38a7cd4f5">
           My Glints Account
         </UButton>
-        <UButton block color="gray" variant="outline" :trailing="false" icon="i-heroicons-envelope">
+        <UButton block color="black" variant="outline" :trailing="false" icon="i-heroicons-envelope" to="mailto:pc@ambrizal.net">
           Send Me An Email
         </UButton>
       </div>
     </div>
   </div>
+
 </template>

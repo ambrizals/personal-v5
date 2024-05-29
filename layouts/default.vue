@@ -38,14 +38,27 @@ function openLink(to: string, target?: string) {
     router.replace(to);
   }
 }
+
+useHead({
+  titleTemplate: (title) => title ? `${title} - Ambrizal Personal Site` : 'Ambrizal Personal Site',
+  htmlAttrs: {
+    lang: 'id'
+  }
+})
 </script>
 
 <template>
-  <ColorScheme>
+  <div>
+    <NuxtLoadingIndicator />
     <div
-      class="flex md:hidden h-14 w-full items-center border-b dark:border-gray-600 border-gray-300 px-4 justify-between sticky top-0 dark:bg-gray-900 bg-gray-50"
+      class="flex md:hidden h-14 w-full items-center border-b dark:border-gray-600 border-gray-300 px-4 justify-between sticky top-0 dark:bg-gray-900 bg-gray-50 z-50"
     >
-      <div class="dark:bg-gray-100 bg-gray-900 rounded-full w-10 h-10"></div>
+      <NuxtLink to="/">
+        <LazyColorScheme>
+          <img v-if="isDark" src="~/assets/image/logo-night.png" alt="logo" title="Logo Saya" />
+          <img v-else src="~/assets/image/logo-light.png" alt="logo" title="Logo Saya" />        
+        </LazyColorScheme>        
+      </NuxtLink>
       <div class="flex justify-center items-center gap-2">
         <UButton
           :icon="
@@ -72,14 +85,16 @@ function openLink(to: string, target?: string) {
 
     <div class="flex min-h-screen">
       <div
-        class="hidden md:flex flex-1 flex-col dark:bg-gray-900 bg-gray-50 px-4 py-2 gap-2"
+        class="hidden md:flex flex-1 flex-col dark:bg-gray-900 bg-gray-50 px-4 py-2 gap-2 border-r border-gray-300 dark:border-gray-600"
       >
         <div class="sticky top-4 flex flex-col gap-2">
           <div class="flex justify-between items-center">
-          <div
-            class="dark:bg-gray-100 bg-gray-900 rounded-full w-10 h-10"
-          ></div>
-
+            <NuxtLink to="/">
+              <LazyColorScheme>
+                <img v-if="isDark" src="~/assets/image/logo-night.png" alt="logo" title="Logo Saya" />
+                <img v-else src="~/assets/image/logo-light.png" alt="logo" title="Logo Saya" />
+              </LazyColorScheme>              
+            </NuxtLink>
           <UButton
             :icon="
               isDark ? 'i-heroicons-moon-20-solid' : 'i-heroicons-sun-20-solid'
@@ -111,7 +126,7 @@ function openLink(to: string, target?: string) {
         />
         </div>
       </div>
-      <div class="w-full md:w-9/12 lg:w-10/12">
+      <div class="w-full md:w-9/12 lg:w-10/12 bg-white dark:bg-black dark:text-gray-50 text-gray-800">
         <slot />
       </div>
     </div>
@@ -169,6 +184,6 @@ function openLink(to: string, target?: string) {
           :middleware="() => toggleMenuResponsive()"
         />
       </div>
-    </USlideover>    
-  </ColorScheme>
+    </USlideover>     
+  </div>
 </template>

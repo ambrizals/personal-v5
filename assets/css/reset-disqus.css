@@ -1,0 +1,9 @@
+iframe {
+  color-scheme: normal;
+}
+
+@media (prefers-color-scheme: dark) {
+  iframe[src*="disqus.com"] {
+      color-scheme: light;
+  }
+}

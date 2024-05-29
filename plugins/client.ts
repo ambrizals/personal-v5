@@ -2,7 +2,15 @@ import { httpLink } from "@trpc/client";
 import { createTRPCNuxtClient, httpBatchLink } from "trpc-nuxt/client";
 import type { AppRouter } from "~/server/trpc/routers";
 
-export default defineNuxtPlugin(() => {
+export default defineNuxtPlugin((nuxtApp) => {
+  const headers = useRequestHeaders();
+  let url = "/api/trpc";
+
+  if (import.meta.server) {
+    url = `http://${nuxtApp.$config.serverUrl}:${nuxtApp.$config.port}${url}`;
+    // console.log("server hits =>", url);
+  }
+
   /**
    * createTRPCNuxtClient adds a `useQuery` composable
    * built on top of `useAsyncData`.
@@ -10,7 +18,8 @@ export default defineNuxtPlugin(() => {
   const batchClient = createTRPCNuxtClient<AppRouter>({
     links: [
       httpBatchLink({
-        url: "/api/trpc",
+        url: url,
+        headers: headers,
       }),
     ],
   });
@@ -18,7 +27,8 @@ export default defineNuxtPlugin(() => {
   const client = createTRPCNuxtClient<AppRouter>({
     links: [
       httpLink({
-        url: "/api/trpc",
+        url: url,
+        headers: headers,
       }),
     ],
   });

@@ -35,11 +35,14 @@ export const HEADER_WEB_MENUS = [
   {
     name: "Project",
     icon: "i-heroicons-cog-8-tooth",
-    to: "/project",
+    to: "/p/project",
   },
   {
     name: "About",
     icon: "i-heroicons-user-circle",
-    to: "/about",
+    to: "/p/about",
   },
 ];
+
+export const MY_RESUME_LINK =
+  "https://drive.google.com/file/d/1Hb9wQwO_XIICe4PRN7hP_cHayaDrHq-U/view";
